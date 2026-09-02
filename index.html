@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduAI Teacher Hub - Trung Tâm Đào Tạo AI Dành Cho Giáo Viên | Nền Tảng Sư Phạm Số</title>
+  <meta name="description" content="Trung tâm đào tạo ứng dụng Trí tuệ nhân tạo (AI) thực chiến số 1 dành cho giáo viên Việt Nam. Đào tạo 100% Online, học phí ưu đãi 299k-599k, cầm tay chỉ việc từ con số 0.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Be Vietnam Pro (Chuẩn tiếng Việt 100%) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 CDN Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <!-- Master CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ==================== 1. STICKY HEADER ==================== -->
+  <header class="main-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="#hero" class="brand-logo">
+          <div class="logo-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <h1>EduAI Teacher Hub</h1>
+            <span>Trung tâm Đào tạo AI dành cho Giáo viên</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Menu -->
+        <nav>
+          <ul class="nav-menu" id="nav-menu">
+            <li><a href="#hero" class="nav-link active">Trang chủ</a></li>
+            <li><a href="#about" class="nav-link">Giới thiệu</a></li>
+            <li><a href="#courses" class="nav-link">Khóa học AI</a></li>
+            <li><a href="#survey-section" class="nav-link">Khảo sát & Lộ trình</a></li>
+            <li><a href="#forum" class="nav-link">Diễn đàn Giáo viên</a></li>
+            <li><a href="#contact" class="nav-link">Liên hệ</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <a href="#survey-section" class="btn btn-primary btn-sm">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Làm bài test & Nhận lộ trình
+          </a>
+          <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 2. HERO SECTION (VỚI ẢNH BANNER CHÍNH THỨC) ==================== -->
+  <section class="hero-section" id="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Cột trái: Headline, Điểm cộng & CTA -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i class="fa-solid fa-sparkles"></i> Tiên Phong Phổ Cập AI Sư Phạm 2026
+          </div>
+          <h1 class="hero-title">
+            Ứng Dụng <span class="highlight">Trí Tuệ Nhân Tạo (AI)</span> Vào Giảng Dạy & Giảm Tải 70% Áp Lực Sổ Sách
+          </h1>
+          <p class="hero-desc">
+            Nền tảng đào tạo AI thực chiến dành riêng cho giáo viên Việt Nam. Cầm tay chỉ việc từ số 0, giáo án chuẩn 5512, slide bài dạy siêu đẹp và đề thi chuẩn ma trận Bộ GD&ĐT.
+          </p>
+
+          <div class="hero-usp-list">
+            <div class="hero-usp-item">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>Đào tạo Online 100% qua Zoom</span>
+            </div>
+            <div class="hero-usp-item">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>Học phí ưu đãi chỉ 299k - 599k</span>
+            </div>
+            <div class="hero-usp-item">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>Không giới hạn độ tuổi, dễ tiếp thu</span>
+            </div>
+            <div class="hero-usp-item">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>Video xem lại trọn đời & Prompt mẫu</span>
+            </div>
+          </div>
+
+          <div class="hero-cta-group">
+            <a href="#courses" class="btn btn-success btn-lg">
+              <i class="fa-solid fa-layer-group"></i> Khám phá Khóa học
+            </a>
+            <a href="#survey-section" class="btn btn-outline-white btn-lg">
+              <i class="fa-solid fa-clipboard-check"></i> Làm bài Test AI 2 Phút
+            </a>
+          </div>
+        </div>
+
+        <!-- Cột phải: Banner Chính Thức Của Trung Tâm -->
+        <div class="hero-banner-frame">
+          <img src="https://cdn.upanhlaylink.com/i/tWin7nsT.jpg" alt="Trung tâm Đào tạo AI dành cho Giáo viên" class="hero-official-img" loading="eager" decoding="async">
+          <div class="hero-banner-caption">
+            <span class="banner-pill"><i class="fa-solid fa-shield-halved"></i> Đào tạo chuẩn Sư phạm</span>
+            <span style="font-size:0.82rem; color:var(--primary-100);"><i class="fa-solid fa-users"></i> 10.000+ Thầy cô tin dùng</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 3. VỀ TRUNG TÂM (ABOUT SECTION) ==================== -->
+  <section class="section-padding" id="about">
+    <div class="container">
+      <div class="section-intro">
+        <span class="section-badge"><i class="fa-solid fa-award"></i> Vì sao chọn EduAI Teacher Hub?</span>
+        <h2 class="section-title">Đột Phá Năng Lực Giảng Dạy Cùng Chuyên Gia AI Sư Phạm</h2>
+        <p class="section-desc">Mọi chương trình đào tạo đều tập trung giải quyết bài toán thực tế của thầy cô: soạn bài, làm slide, ra đề kiểm tra và công tác chủ nhiệm.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-wrap" style="background: linear-gradient(135deg, #1E40AF, #3B82F6);">
+            <i class="fa-solid fa-book-bookmark"></i>
+          </div>
+          <h4>Chuẩn Công Văn 5512</h4>
+          <p>Tạo kế hoạch bài dạy chuẩn 4 hoạt động của Bộ GD&ĐT chỉ trong 15 phút, kèm phiếu học tập phân hóa đối tượng.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap" style="background: linear-gradient(135deg, #0284C7, #38BDF8);">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <h4>Slide Đẹp Không Cần Vẽ</h4>
+          <p>Sử dụng Canva Magic & Gamma AI để tự động tạo slide tương tác, sơ đồ tư duy và hình ảnh minh họa bài giảng cuốn hút.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap" style="background: linear-gradient(135deg, #6D28D9, #A78BFA);">
+            <i class="fa-solid fa-list-check"></i>
+          </div>
+          <h4>Ma Trận Đề Chuẩn Bộ</h4>
+          <p>Tự động hóa xây dựng ma trận đặc tả đề kiểm tra, ngân hàng câu hỏi trắc nghiệm đúng/sai và barem chấm điểm.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap" style="background: linear-gradient(135deg, #B45309, #FBBF24);">
+            <i class="fa-solid fa-medal"></i>
+          </div>
+          <h4>Cam Kết Hoàn Tiền 100%</h4>
+          <p>Cầm tay chỉ việc đến khi làm được sản phẩm. Hoàn lại 100% học phí nếu thầy cô không thấy tiến bộ sau buổi đầu.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 4. SHOWCASE KHÓA HỌC (KHÔNG CÓ SỐ THỨ TỰ) ==================== -->
+  <section class="section-padding courses-section" id="courses">
+    <div class="container">
+      <div class="section-intro">
+        <span class="section-badge"><i class="fa-solid fa-cart-shopping"></i> Hệ Thống Đào Tạo Thực Chiến</span>
+        <h2 class="section-title">Danh Mục Khóa Học AI Dành Riêng Cho Giáo Viên</h2>
+        <p class="section-desc">Học phí ưu đãi trợ giá từ <strong>299.000đ đến 599.000đ</strong>. Học trực tiếp qua Zoom, có thể xem video học thử và nhận link phòng học ngay.</p>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="course-filter-bar">
+        <button class="filter-btn active" data-filter="all">Tất cả khóa học</button>
+        <button class="filter-btn" data-filter="giao_an">Soạn Giáo án 5512</button>
+        <button class="filter-btn" data-filter="slide_hoclieu">Slide & Học liệu</button>
+        <button class="filter-btn" data-filter="khao_thi">Ma trận Đề thi</button>
+        <button class="filter-btn" data-filter="video_ai">Video Bài giảng AI</button>
+        <button class="filter-btn" data-filter="chu_nhiem">Chủ nhiệm & Nhận xét</button>
+        <button class="filter-btn" data-filter="skkn">Sáng kiến kinh nghiệm</button>
+        <button class="filter-btn" data-filter="game_app">Trò chơi học tập</button>
+      </div>
+
+      <!-- Course Cards Grid (Rendered by app.js) -->
+      <div class="courses-ecom-grid" id="ecom-courses-grid"></div>
+    </div>
+  </section>
+
+  <!-- ==================== 5. KHẢO SÁT & ĐỀ XUẤT KHÓA HỌC ==================== -->
+  <section class="section-padding survey-wrapper-section" id="survey-section">
+    <div class="container">
+      <div class="section-intro">
+        <span class="section-badge"><i class="fa-solid fa-brain"></i> Công cụ Phân tích Năng lực</span>
+        <h2 class="section-title">Khảo Sát Năng Lực & Nhận Đề Xuất Khóa Học Cá Nhân Hóa</h2>
+        <p class="section-desc">Trả lời các câu hỏi trắc nghiệm dưới đây để hệ thống AI phân tích và xây dựng lộ trình phù hợp nhất cho Thầy/Cô.</p>
+      </div>
+
+      <!-- Stepper Progress Bar -->
+      <div class="stepper-section" id="stepper-section">
+        <div class="stepper-wrapper">
+          <div class="stepper-progress-fill" id="stepper-fill"></div>
+
+          <div class="step-item active" data-step="0">
+            <div class="step-circle"><i class="fa-solid fa-user"></i></div>
+            <div class="step-title">Khởi động</div>
+          </div>
+
+          <div class="step-item" data-step="1">
+            <div class="step-circle">1</div>
+            <div class="step-title">Tiếp cận AI</div>
+          </div>
+
+          <div class="step-item" data-step="2">
+            <div class="step-circle">2</div>
+            <div class="step-title">Nhu cầu học</div>
+          </div>
+
+          <div class="step-item" data-step="3">
+            <div class="step-circle"><i class="fa-solid fa-award"></i></div>
+            <div class="step-title">Lộ trình & Gợi ý</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MÀN 0: NHẬP THÔNG TIN BAN ĐẦU -->
+      <div class="screen-panel active" id="panel-step-0">
+        <div class="flow-card">
+          <div class="onboarding-grid">
+            <div class="onboarding-intro">
+              <div class="card-header-badge" style="background: rgba(255,255,255,0.2); color: #fff; border:none;">
+                <i class="fa-solid fa-bolt"></i> Khảo sát chuyên môn
+              </div>
+              <h2>Chào Mừng Thầy/Cô Đến Với EduAI</h2>
+              <p>Chỉ mất 2 phút để khám phá tiềm năng ứng dụng AI vào môn dạy của mình và nhận ngay gói học bổng chuyển đổi số sư phạm.</p>
+              
+              <ul class="benefit-list">
+                <li class="benefit-item">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <span>Báo cáo phân tích năng lực AI chi tiết</span>
+                </li>
+                <li class="benefit-item">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <span>Đề xuất chính xác khóa học phù hợp với môn học</span>
+                </li>
+                <li class="benefit-item">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <span>Xem video học thử và nhận link phòng Zoom demo</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="onboarding-form-wrapper">
+              <div style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.35rem; margin-bottom: 4px;">Thông Tin Thầy/Cô</h3>
+                <p style="font-size: 0.9rem; color: var(--slate-500);">Vui lòng nhập thông tin để hệ thống cá nhân hóa báo cáo kết quả:</p>
+              </div>
+
+              <form id="login-form" novalidate>
+                <div class="form-group">
+                  <label class="form-label" for="input-fullname">Họ và tên Thầy/Cô <span class="required">*</span></label>
+                  <div class="input-with-icon">
+                    <input type="text" id="input-fullname" class="form-control" placeholder="Ví dụ: Thầy Nguyễn Văn An" required>
+                    <i class="fa-solid fa-user-tie"></i>
+                  </div>
+                  <div class="form-error-text"></div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="input-email">Địa chỉ Gmail / Email <span class="required">*</span></label>
+                  <div class="input-with-icon">
+                    <input type="email" id="input-email" class="form-control" placeholder="nguyenvanan@gmail.com" required>
+                    <i class="fa-solid fa-envelope"></i>
+                  </div>
+                  <div class="form-error-text"></div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="input-phone">Số điện thoại (Zalo nhận tài liệu) <span class="required">*</span></label>
+                  <div class="input-with-icon">
+                    <input type="tel" id="input-phone" class="form-control" placeholder="0912 345 678" required>
+                    <i class="fa-solid fa-phone"></i>
+                  </div>
+                  <div class="form-error-text"></div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                  <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-start-survey">
+                    <span>BẮT ĐẦU ĐÁNH GIÁ NĂNG LỰC AI</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MÀN 1: THÔNG TIN & MỨC ĐỘ TIẾP CẬN AI -->
+      <div class="screen-panel" id="panel-step-1">
+        <div class="flow-card">
+          <div class="card-header-banner">
+            <span class="card-header-badge"><i class="fa-solid fa-clipboard-check"></i> Bước 1 / 2</span>
+            <h2 class="card-title">Thông Tin Chuyên Môn & Mức Độ Tiếp Cận AI</h2>
+            <p class="card-subtitle">Hãy chia sẻ thông tin giảng dạy thực tế để chúng tôi gợi ý giải pháp AI tối ưu nhất cho Thầy/Cô.</p>
+          </div>
+
+          <form id="step-1-form">
+            <div id="step-1-questions-container"></div>
+
+            <div class="flow-actions">
+              <button type="button" class="btn btn-secondary" id="btn-back-to-step0">
+                <i class="fa-solid fa-arrow-left"></i> Quay lại
+              </button>
+              <div style="display:flex; gap:10px;">
+                <button type="button" class="btn btn-outline" id="btn-reset-survey" style="border-color:var(--rose-500); color:var(--rose-600);">
+                  <i class="fa-solid fa-trash-can"></i> Xóa & Làm lại
+                </button>
+                <button type="submit" class="btn btn-primary btn-lg" id="btn-next-to-step2">
+                  <span>TIẾP TỤC BƯỚC 2</span>
+                  <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- MÀN 2: NHU CẦU HỌC AI (ĐỔI TÊN NÚT BẤM CUỐI) -->
+      <div class="screen-panel" id="panel-step-2">
+        <div class="flow-card">
+          <div class="card-header-banner">
+            <span class="card-header-badge"><i class="fa-solid fa-bullseye"></i> Bước 2 / 2</span>
+            <h2 class="card-title">Nhu Cầu Đào Tạo & Mong Muốn Ứng Dụng AI</h2>
+            <p class="card-subtitle">Thầy/Cô đang tìm kiếm điều gì để giảm tải áp lực và đột phá chất lượng giảng dạy?</p>
+          </div>
+
+          <form id="step-2-form">
+            <div id="step-2-questions-container"></div>
+
+            <div class="flow-actions">
+              <button type="button" class="btn btn-secondary" id="btn-back-to-step1">
+                <i class="fa-solid fa-arrow-left"></i> Quay lại Bước 1
+              </button>
+              <button type="submit" class="btn btn-success btn-lg" id="btn-submit-survey">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Gửi đi và nhận lộ trình khóa học phù hợp</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- MÀN 3: BÁO CÁO NĂNG LỰC & ĐỀ XUẤT KHÓA HỌC THÔNG MINH -->
+      <div class="screen-panel" id="panel-step-3">
+        <div id="result-profile-card"></div>
+
+        <div class="section-intro" style="margin-bottom: 2rem; text-align: left;">
+          <span class="section-badge" style="background: var(--amber-100); color: var(--amber-600);"><i class="fa-solid fa-star"></i> Kết quả phân tích</span>
+          <h3 style="font-size: 1.6rem; color: var(--primary-900);">Khóa Học Được Đề Xuất Riêng Cho Thầy/Cô</h3>
+        </div>
+
+        <div class="top-recommendations-grid" id="top-recommendations-container"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 6. DIỄN ĐÀN THẢO LUẬN GIÁO VIÊN (COMMUNITY FORUM) ==================== -->
+  <section class="section-padding forum-section" id="forum">
+    <div class="container">
+      <div class="section-intro">
+        <span class="section-badge"><i class="fa-solid fa-comments"></i> Cộng Đồng Giáo Viên 4.0</span>
+        <h2 class="section-title">Diễn Đàn Thảo Luận & Chia Sẻ Ứng Dụng AI</h2>
+        <p class="section-desc">Không gian trao đổi kinh nghiệm, chia sẻ prompt giáo án, mẹo làm slide và giải đáp thắc mắc giữa các thầy cô trên toàn quốc.</p>
+      </div>
+
+      <div class="forum-layout-grid">
+        <!-- Cột trái: Khung gửi câu hỏi & Danh sách bài thảo luận -->
+        <div class="forum-main-feed">
+          <!-- Form đăng câu hỏi thảo luận nhanh -->
+          <div class="forum-create-box">
+            <h4><i class="fa-solid fa-pen-to-square" style="color:var(--primary-600);"></i> Đặt câu hỏi hoặc chia sẻ kinh nghiệm của Thầy/Cô:</h4>
+            <form id="forum-create-form">
+              <div class="form-group" style="margin-bottom:0.75rem;">
+                <input type="text" id="forum-input-title" class="form-control" style="padding-left:14px;" placeholder="Tiêu đề câu hỏi hoặc chủ đề chia sẻ..." required>
+              </div>
+              <div class="form-group" style="margin-bottom:0.75rem;">
+                <textarea id="forum-input-content" class="form-control" rows="3" style="padding-left:14px;" placeholder="Nội dung chi tiết (Ví dụ: Thầy cô cho em hỏi cách viết prompt tạo ma trận đề Toán 9...)" required></textarea>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <select id="forum-input-subject" class="form-control form-select" style="width:200px; padding-left:14px;">
+                  <option value="Ngữ văn">Môn Ngữ văn</option>
+                  <option value="Toán học & KHTN">Toán học & KHTN</option>
+                  <option value="Tiếng Anh">Môn Tiếng Anh</option>
+                  <option value="Tiểu học & Mầm non">Tiểu học & Mầm non</option>
+                  <option value="Chủ nhiệm & Sổ sách">Chủ nhiệm & Sổ sách</option>
+                  <option value="Sáng kiến kinh nghiệm">Sáng kiến kinh nghiệm</option>
+                </select>
+                <button type="submit" class="btn btn-primary btn-sm">
+                  <i class="fa-solid fa-paper-plane"></i> Gửi bài thảo luận
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Danh sách bài thảo luận (Rendered by app.js) -->
+          <div id="forum-posts-list"></div>
+        </div>
+
+        <!-- Cột phải: Chủ đề nóng & Nhóm hỗ trợ -->
+        <div class="forum-sidebar">
+          <div class="forum-sidebar-card">
+            <h4><i class="fa-solid fa-fire" style="color:var(--rose-500);"></i> Chủ Đề Đang Sôi Nổi</h4>
+            <ul class="hot-topic-list">
+              <li class="hot-topic-item">
+                <a href="#forum"><i class="fa-solid fa-hashtag"></i> <span>Mẹo soạn giáo án 5512 không bị trùng lặp</span></a>
+              </li>
+              <li class="hot-topic-item">
+                <a href="#forum"><i class="fa-solid fa-hashtag"></i> <span>Tạo video lồng tiếng AI bằng CapCut</span></a>
+              </li>
+              <li class="hot-topic-item">
+                <a href="#forum"><i class="fa-solid fa-hashtag"></i> <span>Trộn đề trắc nghiệm Đúng/Sai chuẩn Bộ</span></a>
+              </li>
+              <li class="hot-topic-item">
+                <a href="#forum"><i class="fa-solid fa-hashtag"></i> <span>Viết sáng kiến kinh nghiệm đạt giải cấp Tỉnh</span></a>
+              </li>
+              <li class="hot-topic-item">
+                <a href="#forum"><i class="fa-solid fa-hashtag"></i> <span>Thiết kế slide tương tác bằng Gamma AI</span></a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="forum-sidebar-card" style="background: linear-gradient(135deg, #EFF6FF, #DBEAFE); border-color: var(--primary-200);">
+            <h4><i class="fa-solid fa-headset" style="color:var(--primary-600);"></i> Hỗ Trợ Chuyên Môn 1:1</h4>
+            <p style="font-size:0.88rem; color:var(--slate-600); margin-bottom:1rem;">
+              Tham gia nhóm Zalo để được đội ngũ Giảng viên giải đáp câu hỏi và gửi kho Prompt sư phạm miễn phí mỗi ngày.
+            </p>
+            <a href="https://zalo.me/g/eduai_teacher" target="_blank" class="btn btn-primary btn-block btn-sm">
+              <i class="fa-solid fa-comments"></i> Vào Nhóm Zalo Giáo Viên
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MODAL VIDEO HỌC THỬ (VỚI NÚT "X" ĐỎ NỔI BẬT) ==================== -->
+  <div class="modal-backdrop" id="trial-video-modal">
+    <div class="video-modal-box">
+      <div class="video-modal-header">
+        <div class="video-modal-title" id="video-modal-title-text">
+          <i class="fa-solid fa-circle-play"></i> Video Trải Nghiệm Bài Giảng AI
+        </div>
+        <!-- Dấu X màu đỏ/trắng nổi bật ở góc trên bên phải -->
+        <button class="video-modal-close-btn" id="video-modal-close-btn" title="Đóng video">&times;</button>
+      </div>
+
+      <div class="video-player-container">
+        <video id="trial-video-player" class="video-player-frame" controls playsinline>
+          <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+          Trình duyệt của bạn không hỗ trợ phát video HTML5.
+        </video>
+        <div style="margin-top:1rem; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:0.85rem; color:#94A3B8;">
+            <i class="fa-solid fa-chalkboard-user"></i> Trích đoạn thực hành trực tiếp từ lớp học Zoom
+          </span>
+          <button class="btn btn-primary btn-sm" onclick="document.getElementById('trial-video-modal').classList.remove('active'); document.getElementById('checkout-modal').classList.add('active');">
+            <i class="fa-solid fa-cart-shopping"></i> Đăng ký khóa này ngay
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL CHECKOUT VIETQR & ZOOM CLASSROOM ==================== -->
+  <div class="modal-backdrop" id="checkout-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-graduation-cap" style="color:var(--primary-600); margin-right:8px;"></i> Đăng Ký Khóa Học & Nhận Link Zoom</h3>
+        <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- View 1: Checkout QR Thanh toán -->
+        <div id="modal-checkout-view"></div>
+
+        <!-- View 2: Success & Cấp Link Zoom Trực Tiếp -->
+        <div id="modal-success-view" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="main-footer" id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4><i class="fa-solid fa-graduation-cap" style="color:var(--cyan-400); margin-right:8px;"></i> Trung Tâm Đào Tạo AI Dành Cho Giáo Viên</h4>
+          <p>Tiên phong đồng hành cùng giáo viên Việt Nam trong kỷ nguyên chuyển đổi số giáo dục và đổi mới phương pháp sư phạm Chương trình GDPT 2018.</p>
+          <div style="margin-top: 1rem; color: var(--slate-400); font-size: 0.85rem;">
+            <i class="fa-solid fa-location-dot"></i> Trụ sở: Tòa nhà Công nghệ Sư phạm Số, Cầu Giấy, Hà Nội
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h5>Khóa Học Tiêu Biểu</h5>
+          <ul class="footer-links">
+            <li><a href="#courses">Soạn Giáo Án 5512 Chuẩn Bộ</a></li>
+            <li><a href="#courses">Thiết Kế Slide Canva & Gamma AI</a></li>
+            <li><a href="#courses">Ma Trận Đề Thi & Đánh Giá Năng Lực</a></li>
+            <li><a href="#courses">Sáng Kiến Kinh Nghiệm Đột Phá</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Hỗ Trợ Thầy Cô 24/7</h5>
+          <ul class="footer-links">
+            <li><i class="fa-solid fa-phone"></i> Hotline/Zalo: 0988.123.456</li>
+            <li><i class="fa-solid fa-envelope"></i> Email: hotro@eduai.edu.vn</li>
+            <li><i class="fa-solid fa-shield-halved"></i> Bảo mật thông tin 100%</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 EduAI Teacher Hub. Bản quyền thuộc về Trung tâm Đào tạo AI dành cho Giáo viên.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Tải Data & Logic App -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
