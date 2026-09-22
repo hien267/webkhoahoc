@@ -188,6 +188,42 @@
     </div>
   </section>
 
+  <!-- ==================== 4B. LỊCH HỌC TRỰC TUYẾN (ZOOM CALENDAR WIDGET) ==================== -->
+  <section class="section-padding" id="calendar-section">
+    <div class="container">
+      <div class="section-intro">
+        <span class="section-badge"><i class="fa-solid fa-calendar-days"></i> Lịch Khai Giảng Trực Tuyến</span>
+        <h2 class="section-title">Lịch Các Buổi Học Zoom Sắp Tới</h2>
+        <p class="section-desc">Những ngày được viền/tô <strong style="color:var(--rose-600);">đỏ đậm</strong> là ngày có lớp Zoom chính thức đang mở. Bấm vào từng ngày để xem chi tiết khóa học và khung giờ vào lớp.</p>
+      </div>
+
+      <div class="calendar-widget-card">
+        <div class="calendar-widget-header">
+          <button type="button" class="calendar-nav-btn" id="calendar-prev-month" aria-label="Tháng trước">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <h3 id="calendar-month-label">Tháng</h3>
+          <button type="button" class="calendar-nav-btn" id="calendar-next-month" aria-label="Tháng sau">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <div class="calendar-weekday-row">
+          <span>CN</span><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span>
+        </div>
+
+        <div class="calendar-days-grid" id="calendar-days-grid"></div>
+
+        <div class="calendar-legend">
+          <span class="legend-dot has-class-dot"></span> Có lịch học Zoom
+          <span class="legend-dot today-dot" style="margin-left:16px;"></span> Hôm nay
+        </div>
+
+        <div class="calendar-day-detail" id="calendar-day-detail"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- ==================== 5. KHẢO SÁT & ĐỀ XUẤT KHÓA HỌC ==================== -->
   <section class="section-padding survey-wrapper-section" id="survey-section">
     <div class="container">
@@ -536,5 +572,76 @@
   <!-- Tải Data & Logic App -->
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
+
+  <!-- ====================================================================
+       TÍCH HỢP TELEGRAM WEBHOOK NGẦM (SALES NOTIFICATION)
+       - Điền TOKEN Bot và CHAT ID của bạn vào 2 biến ngay bên dưới.
+       - Toàn bộ hướng dẫn lấy Token/Chat ID nằm trong claude.md (mục "Ghi chú").
+       ==================================================================== -->
+  <script>
+    const TELEGRAM_BOT_TOKEN = '8837037344:AAHLohgSbQ9oJ-oDAe8NNX32sKe1pYuGVnE';
+    const TELEGRAM_CHAT_ID = '8910857318';
+
+    /**
+     * Gửi thông báo Lead/Thanh toán về nhóm Telegram của đội Sales qua Telegram Bot API.
+     * @param {Object} info
+     * @param {string} info.eventType - 'khao_sat_hoan_thanh' | 'xac_nhan_thanh_toan' | ...
+     * @param {string} info.fullName - Họ tên khách hàng
+     * @param {string} info.phone - Số điện thoại khách hàng
+     * @param {string} info.courseTitle - Khóa học đăng ký (theo kết quả trắc nghiệm)
+     * @param {number} [info.matchRate] - % độ phù hợp (nếu có, từ thuật toán trắc nghiệm)
+     * @param {string} info.status - 'unpaid' | 'paid'
+     * @param {string} [info.transactionId] - Mã định danh giao dịch (VD: EDUAI-12345)
+     */
+    async function sendTelegramNotification(info) {
+      if (
+        !TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN === 'DIEN_TOKEN_BOT_VAO_DAY' ||
+        !TELEGRAM_CHAT_ID || TELEGRAM_CHAT_ID === 'DIEN_CHAT_ID_VAO_DAY'
+      ) {
+        console.info('[Telegram] Chưa cấu hình TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID nên bỏ qua gửi. Dữ liệu sự kiện:', info);
+        return;
+      }
+
+      const eventTitleMap = {
+        khao_sat_hoan_thanh: '📝 KHÁCH VỪA HOÀN THÀNH BÀI KHẢO SÁT',
+        xac_nhan_thanh_toan: '💰 KHÁCH VỪA XÁC NHẬN THANH TOÁN',
+        xac_nhan_thanh_toan_thu_cong: '✅ SALES VỪA XÁC NHẬN THANH TOÁN THỦ CÔNG',
+        huy_thanh_toan_thu_cong: '⚠️ SALES VỪA HỦY TRẠNG THÁI THANH TOÁN'
+      };
+      const eventTitle = eventTitleMap[info.eventType] || '🔔 THÔNG BÁO TỪ EDUAI TEACHER HUB';
+      const statusText = info.status === 'paid'
+        ? '✅ ĐÃ THANH TOÁN (xác nhận qua mã định danh QR)'
+        : '⏳ Chưa thanh toán';
+
+      const messageLines = [
+        eventTitle,
+        '',
+        `👤 Họ tên: ${info.fullName || 'Chưa cung cấp'}`,
+        `📞 Số điện thoại: ${info.phone || 'Chưa cung cấp'}`,
+        `🎓 Khóa học đăng ký (theo trắc nghiệm): ${info.courseTitle || 'Chưa xác định'}${info.matchRate ? ` — Phù hợp ${info.matchRate}%` : ''}`
+      ];
+      if (info.transactionId) {
+        messageLines.push(`🔖 Mã định danh giao dịch: ${info.transactionId}`);
+      }
+      messageLines.push(`💳 Trạng thái thanh toán: ${statusText}`);
+      messageLines.push(`🕐 Thời gian: ${new Date().toLocaleString('vi-VN')}`);
+
+      const telegramApiUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+      try {
+        await fetch(telegramApiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: messageLines.join('\n')
+          })
+        });
+        console.info('[Telegram] Đã gửi thông báo Sales thành công.');
+      } catch (err) {
+        console.warn('[Telegram] Gửi thông báo thất bại (kiểm tra lại TOKEN/CHAT_ID hoặc kết nối mạng):', err);
+      }
+    }
+  </script>
 </body>
 </html>

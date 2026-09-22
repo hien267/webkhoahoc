@@ -2,6 +2,18 @@
  * Dữ liệu Hệ thống Khóa học, Diễn đàn & Bộ quy tắc Đề xuất cho EduAI Teacher Hub
  */
 
+// Bảng ánh xạ "Thứ" tiếng Việt (xuất hiện trong course.nextClassSchedule) sang chỉ số
+// ngày trong tuần chuẩn JavaScript Date.getDay() (0 = Chủ Nhật ... 6 = Thứ 7).
+const WEEKDAY_MAP = {
+  "chủ nhật": 0,
+  "thứ 2": 1,
+  "thứ 3": 2,
+  "thứ 4": 3,
+  "thứ 5": 4,
+  "thứ 6": 5,
+  "thứ 7": 6
+};
+
 const BANK_CONFIG = {
   bankName: "MB Bank (Ngân hàng Quân Đội)",
   accountNumber: "0988123456",
