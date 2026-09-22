@@ -35,9 +35,6 @@
     selectedCourseForCheckout: null,
     forumPosts: [...FORUM_POSTS_DATA],
     leads: [],
-    calendarViewDate: new Date(),
-    selectedCalendarDate: null,
-    currentCalendarDayMap: {},
     unlockedCourseId: null
   };
 
@@ -68,10 +65,7 @@
       step2Questions: document.getElementById('step-2-questions-container'),
       resultProfile: document.getElementById('result-profile-card'),
       topRecommendations: document.getElementById('top-recommendations-container'),
-      forumPostsList: document.getElementById('forum-posts-list'),
-      calendarDaysGrid: document.getElementById('calendar-days-grid'),
-      calendarMonthLabel: document.getElementById('calendar-month-label'),
-      calendarDayDetail: document.getElementById('calendar-day-detail')
+      forumPostsList: document.getElementById('forum-posts-list')
     },
     buttons: {
       backToStep0: document.getElementById('btn-back-to-step0'),
@@ -104,7 +98,6 @@
     renderStep1Questions();
     renderStep2Questions();
     renderForumPosts();
-    renderCalendarWidget();
     attachEventListeners();
     updateUIForStep(state.currentStep);
   }
@@ -673,22 +666,6 @@
         showToast('Đã gửi bài thảo luận lên diễn đàn thành công!', 'success');
       });
     }
-
-    // 11. Lịch Học Trực Tuyến: Điều hướng Tháng trước / Tháng sau
-    const btnCalendarPrev = document.getElementById('calendar-prev-month');
-    const btnCalendarNext = document.getElementById('calendar-next-month');
-    if (btnCalendarPrev) {
-      btnCalendarPrev.addEventListener('click', function () {
-        state.calendarViewDate = new Date(state.calendarViewDate.getFullYear(), state.calendarViewDate.getMonth() - 1, 1);
-        renderCalendarWidget();
-      });
-    }
-    if (btnCalendarNext) {
-      btnCalendarNext.addEventListener('click', function () {
-        state.calendarViewDate = new Date(state.calendarViewDate.getFullYear(), state.calendarViewDate.getMonth() + 1, 1);
-        renderCalendarWidget();
-      });
-    }
   }
 
   // ==========================================
@@ -993,10 +970,6 @@
           </a>
         </div>
 
-        <button class="btn btn-success btn-lg btn-block" id="btn-view-my-calendar" style="margin-top:12px; background:var(--rose-500); border-color:var(--rose-500);">
-          <i class="fa-solid fa-calendar-check"></i> 🔓 Xem & Mở Khóa Lịch Học Của Bạn
-        </button>
-
         <div style="display:flex; gap:10px; margin-top:1rem;">
           <a href="https://zalo.me/g/eduai_teacher" target="_blank" class="btn btn-secondary" style="flex:1;">
             <i class="fa-solid fa-comments"></i> Tham gia Nhóm Zalo Hỗ Trợ 1:1
@@ -1031,14 +1004,6 @@
     }
     showToast('Đã xác nhận thanh toán và gửi thông báo tới đội Sales qua Telegram!', 'success');
     state.unlockedCourseId = course.id;
-
-    const btnViewCalendar = document.getElementById('btn-view-my-calendar');
-    if (btnViewCalendar) {
-      btnViewCalendar.addEventListener('click', function () {
-        closeCheckoutModal();
-        jumpCalendarToCourse(course);
-      });
-    }
 
     createConfetti();
   }
@@ -1105,178 +1070,6 @@
       renderForumPosts();
     }
   };
-
-  // ==========================================
-  // LỊCH HỌC TRỰC TUYẾN (ZOOM CALENDAR WIDGET)
-  // ==========================================
-
-  function formatDateKey(date) {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const d = String(date.getDate()).padStart(2, '0');
-    return `${y}-${m}-${d}`;
-  }
-
-  function getCourseScheduleWeekdays(course) {
-    const text = (course.nextClassSchedule || '').toLowerCase();
-    const timeMatch = text.match(/(\d{1,2}:\d{2})/);
-    const time = timeMatch ? timeMatch[1] : '';
-    const weekdays = [];
-    Object.keys(WEEKDAY_MAP).forEach(key => {
-      if (text.includes(key)) weekdays.push(WEEKDAY_MAP[key]);
-    });
-    return { time, weekdays };
-  }
-
-  function buildClassDayIndex(monthDate) {
-    const year = monthDate.getFullYear();
-    const month = monthDate.getMonth();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const dayMap = {};
-
-    COURSES_DATA.forEach(course => {
-      const { time, weekdays } = getCourseScheduleWeekdays(course);
-      if (!weekdays.length) return;
-
-      for (let d = 1; d <= daysInMonth; d++) {
-        const dateObj = new Date(year, month, d);
-        if (weekdays.includes(dateObj.getDay())) {
-          const key = formatDateKey(dateObj);
-          if (!dayMap[key]) dayMap[key] = [];
-          dayMap[key].push({
-            courseId: course.id,
-            courseTitle: course.shortTitle,
-            time: time,
-            gradient: course.gradient
-          });
-        }
-      }
-    });
-
-    return dayMap;
-  }
-
-  function findNextClassDate(course) {
-    const { weekdays } = getCourseScheduleWeekdays(course);
-    if (!weekdays.length) return null;
-    const today = new Date();
-    for (let i = 0; i < 30; i++) {
-      const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
-      if (weekdays.includes(d.getDay())) return d;
-    }
-    return null;
-  }
-
-  function renderCalendarWidget() {
-    const grid = DOM.containers.calendarDaysGrid;
-    const label = DOM.containers.calendarMonthLabel;
-    if (!grid || !label) return;
-
-    const viewDate = state.calendarViewDate;
-    const year = viewDate.getFullYear();
-    const month = viewDate.getMonth();
-    label.textContent = `Tháng ${month + 1} / ${year}`;
-
-    state.currentCalendarDayMap = buildClassDayIndex(viewDate);
-    const firstDayOfWeek = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const todayKey = formatDateKey(new Date());
-
-    let html = '';
-    for (let i = 0; i < firstDayOfWeek; i++) {
-      html += `<div class="calendar-day-cell empty"></div>`;
-    }
-
-    for (let d = 1; d <= daysInMonth; d++) {
-      const dateObj = new Date(year, month, d);
-      const key = formatDateKey(dateObj);
-      const classesToday = state.currentCalendarDayMap[key] || [];
-      const hasClass = classesToday.length > 0;
-      const isToday = key === todayKey;
-      const isSelected = key === state.selectedCalendarDate;
-
-      html += `
-        <button type="button" class="calendar-day-cell ${hasClass ? 'has-class' : ''} ${isToday ? 'is-today' : ''} ${isSelected ? 'is-selected' : ''}" data-date-key="${key}">
-          <span class="calendar-day-number">${d}</span>
-          ${hasClass ? `<span class="calendar-day-dot">${classesToday.length}</span>` : ''}
-        </button>
-      `;
-    }
-
-    grid.innerHTML = html;
-
-    grid.querySelectorAll('.calendar-day-cell:not(.empty)').forEach(cell => {
-      cell.addEventListener('click', function () {
-        selectCalendarDay(this.getAttribute('data-date-key'));
-      });
-    });
-
-    renderCalendarDayDetail();
-  }
-
-  function selectCalendarDay(key) {
-    state.selectedCalendarDate = key;
-    const grid = DOM.containers.calendarDaysGrid;
-    if (grid) {
-      grid.querySelectorAll('.calendar-day-cell').forEach(cell => cell.classList.remove('is-selected'));
-      const cell = grid.querySelector(`[data-date-key="${key}"]`);
-      if (cell) cell.classList.add('is-selected');
-    }
-    renderCalendarDayDetail();
-  }
-
-  function renderCalendarDayDetail() {
-    const container = DOM.containers.calendarDayDetail;
-    if (!container) return;
-
-    const key = state.selectedCalendarDate || formatDateKey(new Date());
-    const classesToday = state.currentCalendarDayMap[key] || [];
-    const [y, m, d] = key.split('-');
-    const dateLabel = `${d}/${m}/${y}`;
-
-    if (classesToday.length === 0) {
-      container.innerHTML = `
-        <div class="calendar-detail-empty">
-          <i class="fa-regular fa-calendar-xmark"></i>
-          <span>Ngày ${dateLabel} không có lớp học Zoom nào.</span>
-        </div>
-      `;
-      return;
-    }
-
-    container.innerHTML = `
-      <h4 class="calendar-detail-title"><i class="fa-solid fa-calendar-check"></i> Lịch học ngày ${dateLabel}</h4>
-      <div class="calendar-detail-list">
-        ${classesToday.map(c => `
-          <div class="calendar-detail-item">
-            <div class="calendar-detail-badge" style="background:${c.gradient};"><i class="fa-solid fa-video"></i></div>
-            <div class="calendar-detail-info">
-              <strong>${escapeHtml(c.courseTitle)}</strong>
-              <span>${c.time ? `Giờ vào lớp: ${c.time}` : 'Xem giờ chi tiết trong email xác nhận'}</span>
-            </div>
-            ${c.courseId === state.unlockedCourseId ? '<span class="calendar-unlocked-tag"><i class="fa-solid fa-unlock"></i> Lớp của bạn</span>' : ''}
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  function jumpCalendarToCourse(course) {
-    const nextDate = findNextClassDate(course);
-    state.unlockedCourseId = course.id;
-
-    if (nextDate) {
-      state.calendarViewDate = new Date(nextDate.getFullYear(), nextDate.getMonth(), 1);
-      renderCalendarWidget();
-      selectCalendarDay(formatDateKey(nextDate));
-    } else {
-      renderCalendarDayDetail();
-    }
-
-    const calendarSection = document.getElementById('calendar-section');
-    if (calendarSection) calendarSection.scrollIntoView({ behavior: 'smooth' });
-    showToast('Đã mở khóa Lịch học & Link Zoom cho khóa học của Thầy/Cô!', 'success');
-  }
 
   // ==========================================
   // BẢNG QUẢN LÝ LEAD (MINI ADMIN DASHBOARD) & WEBHOOK SALES
