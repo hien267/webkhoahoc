@@ -495,40 +495,95 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>
 
+  <!-- ==================== MODAL CHÍNH SÁCH & QUY ĐỊNH (MỞ TỪ FOOTER) ==================== -->
+  <div class="modal-backdrop" id="policy-modal" role="dialog" aria-modal="true" aria-labelledby="policy-modal-title">
+    <div class="modal-box policy-modal-box">
+      <div class="modal-header">
+        <h3 id="policy-modal-title"><i class="fa-solid fa-scale-balanced" style="color:var(--primary-600); margin-right:8px;"></i> Chính sách</h3>
+        <button class="modal-close-btn" id="policy-modal-close-btn" aria-label="Đóng">&times;</button>
+      </div>
+      <div class="modal-body policy-modal-body" id="policy-modal-body"></div>
+    </div>
+  </div>
+
   <!-- ==================== FOOTER ==================== -->
   <footer class="main-footer" id="contact">
     <div class="container">
       <div class="footer-grid">
+        <!-- Cột 1: Về EduAI & Giới thiệu -->
         <div class="footer-brand">
-          <h4><i class="fa-solid fa-graduation-cap" style="color:var(--cyan-400); margin-right:8px;"></i> Trung Tâm Đào Tạo AI Dành Cho Giáo Viên</h4>
-          <p>Tiên phong đồng hành cùng giáo viên Việt Nam trong kỷ nguyên chuyển đổi số giáo dục và đổi mới phương pháp sư phạm Chương trình GDPT 2018.</p>
-          <div style="margin-top: 1rem; color: var(--slate-400); font-size: 0.85rem;">
-            <i class="fa-solid fa-location-dot"></i> Trụ sở: Tòa nhà Công nghệ Sư phạm Số, Cầu Giấy, Hà Nội
-          </div>
-        </div>
-
-        <div class="footer-col">
-          <h5>Khóa Học Tiêu Biểu</h5>
-          <ul class="footer-links">
-            <li><a href="#courses">Soạn Giáo Án 5512 Chuẩn Bộ</a></li>
-            <li><a href="#courses">Thiết Kế Slide Canva & Gamma AI</a></li>
-            <li><a href="#courses">Ma Trận Đề Thi & Đánh Giá Năng Lực</a></li>
-            <li><a href="#courses">Sáng Kiến Kinh Nghiệm Đột Phá</a></li>
+          <a href="#hero" class="footer-logo">
+            <span class="footer-logo-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+            <span class="footer-logo-text">EduAI Teacher Hub</span>
+          </a>
+          <p>
+            Trung tâm Đào tạo AI dành cho Giáo viên — đồng hành cùng thầy cô Việt Nam ứng dụng Trí tuệ nhân tạo thực chiến vào soạn bài, đánh giá và công tác chủ nhiệm, tiết kiệm đến 70% thời gian sổ sách.
+          </p>
+          <ul class="footer-highlights">
+            <li><i class="fa-solid fa-circle-check"></i> 8 khóa học thực chiến, chuẩn GDPT 2018</li>
+            <li><i class="fa-solid fa-circle-check"></i> Học Online 100% qua Zoom, xem lại trọn đời</li>
+            <li><i class="fa-solid fa-location-dot"></i> Cầu Giấy, Hà Nội</li>
           </ul>
         </div>
 
-        <div class="footer-col">
-          <h5>Hỗ Trợ Thầy Cô 24/7</h5>
+        <!-- Cột 2: Khám phá / Liên kết nhanh -->
+        <nav class="footer-col" aria-label="Liên kết nhanh">
+          <h5>Khám Phá</h5>
           <ul class="footer-links">
-            <li><i class="fa-solid fa-phone"></i> Hotline/Zalo: 0988.123.456</li>
-            <li><i class="fa-solid fa-envelope"></i> Email: hotro@eduai.edu.vn</li>
-            <li><i class="fa-solid fa-shield-halved"></i> Bảo mật thông tin 100%</li>
+            <li><a href="#about"><i class="fa-solid fa-chevron-right"></i> Về EduAI</a></li>
+            <li><a href="#courses"><i class="fa-solid fa-chevron-right"></i> Khóa học</a></li>
+            <li><a href="#survey-section"><i class="fa-solid fa-chevron-right"></i> Test AI</a></li>
+            <li><a href="#forum"><i class="fa-solid fa-chevron-right"></i> Cộng đồng</a></li>
+            <li><a href="#contact"><i class="fa-solid fa-chevron-right"></i> Liên hệ</a></li>
+          </ul>
+        </nav>
+
+        <!-- Cột 3: Chính sách & Quy định -->
+        <nav class="footer-col" aria-label="Chính sách và quy định">
+          <h5>Chính Sách & Quy Định</h5>
+          <ul class="footer-links">
+            <li><a href="#contact" data-policy="privacy"><i class="fa-solid fa-chevron-right"></i> Chính sách bảo mật</a></li>
+            <li><a href="#contact" data-policy="terms"><i class="fa-solid fa-chevron-right"></i> Điều khoản sử dụng</a></li>
+            <li><a href="#contact" data-policy="refund"><i class="fa-solid fa-chevron-right"></i> Chính sách hoàn tiền</a></li>
+            <li><a href="#contact" data-policy="student"><i class="fa-solid fa-chevron-right"></i> Quy định học viên</a></li>
+          </ul>
+        </nav>
+
+        <!-- Cột 4: Hỗ trợ & Kết nối -->
+        <div class="footer-col">
+          <h5>Hỗ Trợ & Kết Nối</h5>
+          <ul class="footer-contact">
+            <li>
+              <a href="https://zalo.me/g/eduai_teacher" target="_blank" rel="noopener">
+                <span class="footer-contact-icon icon-zalo">Zalo</span>
+                <span><small>Nhóm Zalo Giáo viên</small>Hỗ trợ 1:1 mỗi ngày</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/eduaiteacherhub" target="_blank" rel="noopener">
+                <span class="footer-contact-icon icon-facebook"><i class="fa-brands fa-facebook-f"></i></span>
+                <span><small>Facebook</small>EduAI Teacher Hub</span>
+              </a>
+            </li>
+            <li>
+              <a href="mailto:hotro@eduai.edu.vn">
+                <span class="footer-contact-icon icon-email"><i class="fa-solid fa-envelope"></i></span>
+                <span><small>Email</small>hotro@eduai.edu.vn</span>
+              </a>
+            </li>
+            <li>
+              <a href="tel:0988123456">
+                <span class="footer-contact-icon icon-hotline"><i class="fa-solid fa-phone"></i></span>
+                <span><small>Hotline (8:00 – 21:00)</small>0988.123.456</span>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
         <p>&copy; 2026 EduAI Teacher Hub. Bản quyền thuộc về Trung tâm Đào tạo AI dành cho Giáo viên.</p>
+        <a href="#hero" class="footer-back-top"><i class="fa-solid fa-arrow-up"></i> Lên đầu trang</a>
       </div>
     </div>
   </footer>
@@ -536,6 +591,92 @@
   <!-- Tải Data & Logic App -->
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
+
+  <!-- Footer: Modal nội dung Chính sách & Quy định -->
+  <script>
+    (function () {
+      const POLICY_CONTENT = {
+        privacy: {
+          title: 'Chính sách bảo mật',
+          icon: 'fa-shield-halved',
+          items: [
+            'EduAI chỉ thu thập Họ tên, Email, Số điện thoại và câu trả lời khảo sát để đề xuất lộ trình học và hỗ trợ đăng ký khóa học.',
+            'Thông tin của thầy cô không được bán, cho thuê hay chia sẻ cho bên thứ ba vì mục đích quảng cáo.',
+            'Tiến trình khảo sát được lưu tạm trên chính trình duyệt của thầy cô để không bị mất khi tải lại trang; có thể xóa bất kỳ lúc nào bằng nút "Xóa & Làm lại".',
+            'Thầy cô có quyền yêu cầu xem, chỉnh sửa hoặc xóa dữ liệu cá nhân bằng cách liên hệ hotro@eduai.edu.vn.'
+          ]
+        },
+        terms: {
+          title: 'Điều khoản sử dụng',
+          icon: 'fa-file-contract',
+          items: [
+            'Nội dung bài giảng, video, kho Prompt mẫu thuộc bản quyền của EduAI Teacher Hub, chỉ dùng cho mục đích học tập và giảng dạy cá nhân.',
+            'Không sao chép, phát tán hoặc bán lại tài liệu khóa học dưới bất kỳ hình thức nào khi chưa có sự đồng ý bằng văn bản.',
+            'Tài khoản và link Zoom lớp học chỉ dành cho học viên đã đăng ký, không chia sẻ cho người khác.',
+            'EduAI có quyền cập nhật điều khoản; mọi thay đổi sẽ được thông báo trên website và nhóm Zalo học viên.'
+          ]
+        },
+        refund: {
+          title: 'Chính sách hoàn tiền',
+          icon: 'fa-rotate-left',
+          items: [
+            'Hoàn 100% học phí nếu thầy cô yêu cầu trong vòng 7 ngày kể từ ngày thanh toán và chưa tham gia quá 1 buổi học.',
+            'Trường hợp lớp học bị hủy hoặc dời lịch từ phía Trung tâm, thầy cô được chọn chuyển lớp miễn phí hoặc hoàn tiền toàn bộ.',
+            'Yêu cầu hoàn tiền gửi qua Zalo hoặc Email kèm Mã giao dịch; Trung tâm xử lý trong 3–5 ngày làm việc.',
+            'Tiền được hoàn về đúng tài khoản ngân hàng đã chuyển khoản.'
+          ]
+        },
+        student: {
+          title: 'Quy định học viên',
+          icon: 'fa-user-graduate',
+          items: [
+            'Vào lớp Zoom đúng giờ, đặt tên hiển thị theo cú pháp: Họ tên – Môn dạy – Tỉnh/Thành.',
+            'Chuẩn bị máy tính/điện thoại có kết nối Internet ổn định và tài khoản Gmail để thực hành các công cụ AI.',
+            'Tôn trọng giảng viên và đồng nghiệp, không đăng nội dung quảng cáo, không phù hợp trong nhóm lớp và Diễn đàn.',
+            'Hoàn thành bài thực hành cuối khóa để được cấp Chứng nhận hoàn thành khóa học của Trung tâm.'
+          ]
+        }
+      };
+
+      const modal = document.getElementById('policy-modal');
+      const titleEl = document.getElementById('policy-modal-title');
+      const bodyEl = document.getElementById('policy-modal-body');
+      const closeBtn = document.getElementById('policy-modal-close-btn');
+      if (!modal || !titleEl || !bodyEl || !closeBtn) return;
+
+      function openPolicy(key) {
+        const policy = POLICY_CONTENT[key];
+        if (!policy) return;
+        titleEl.innerHTML = `<i class="fa-solid ${policy.icon}" style="color:var(--primary-600); margin-right:8px;"></i> ${policy.title}`;
+        bodyEl.innerHTML = `
+          <ul class="policy-list">
+            ${policy.items.map(item => `<li><i class="fa-solid fa-circle-check"></i><span>${item}</span></li>`).join('')}
+          </ul>
+          <p class="policy-note">
+            Cần hỗ trợ thêm? Liên hệ Hotline <a href="tel:0988123456">0988.123.456</a> hoặc Email <a href="mailto:hotro@eduai.edu.vn">hotro@eduai.edu.vn</a>.
+          </p>`;
+        modal.classList.add('active');
+      }
+
+      function closePolicy() {
+        modal.classList.remove('active');
+      }
+
+      document.querySelectorAll('[data-policy]').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          openPolicy(link.dataset.policy);
+        });
+      });
+      closeBtn.addEventListener('click', closePolicy);
+      modal.addEventListener('click', e => {
+        if (e.target === modal) closePolicy();
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closePolicy();
+      });
+    })();
+  </script>
 
   <!-- ====================================================================
        TÍCH HỢP TELEGRAM WEBHOOK NGẦM (SALES NOTIFICATION)
