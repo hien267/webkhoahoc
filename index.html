@@ -19,6 +19,233 @@
 
   <!-- Master CSS -->
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- ==========================================================================
+       TỐI ƯU HÓA TRỰC QUAN NÚT BẤM TEST AI & PHÂN CẤP THỊ GIÁC (VISUAL HIERARCHY)
+       ========================================================================== -->
+  <style>
+    /* 1. Nút "Làm bài test & Nhận lộ trình" trên Header */
+    .btn-test-ai-header {
+      position: relative;
+      background: linear-gradient(135deg, #FF6B00 0%, #F59E0B 45%, #EF4444 100%);
+      background-size: 200% 200%;
+      color: #FFFFFF !important;
+      font-weight: 800;
+      border-radius: var(--radius-full);
+      padding: 9px 18px;
+      font-size: 0.86rem;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.45), 0 2px 6px rgba(239, 68, 68, 0.25);
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      animation: pulseGlowHeader 3s infinite ease-in-out;
+      z-index: 1;
+    }
+
+    .btn-test-ai-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+      transform: skewX(-25deg);
+      animation: shimmerSweep 3.2s infinite;
+      pointer-events: none;
+    }
+
+    .btn-test-ai-header:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.55), 0 0 16px rgba(245, 158, 11, 0.6);
+      color: #FFFFFF !important;
+    }
+
+    .btn-test-ai-header .header-badge-free {
+      background: rgba(0, 0, 0, 0.22);
+      color: #FEF08A;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border: 1px solid rgba(254, 240, 138, 0.4);
+    }
+
+    /* 2. NÚT TEST AI SIÊU NỔI BẬT TRÊN HERO (PRIMARY CTA SỐ 1) */
+    .btn-test-ai-hero {
+      position: relative;
+      background: linear-gradient(135deg, #FF6B00 0%, #FF8E53 30%, #F59E0B 70%, #EF4444 100%);
+      background-size: 220% 220%;
+      animation: gradientFlow 4s ease infinite, pulseHeroGlow 2.4s infinite ease-in-out;
+      color: #FFFFFF !important;
+      font-size: 1.06rem;
+      font-weight: 800;
+      padding: 15px 28px;
+      border-radius: var(--radius-lg);
+      border: 2px solid rgba(255, 255, 255, 0.45);
+      box-shadow: 0 8px 26px rgba(245, 158, 11, 0.52), 0 0 20px rgba(239, 68, 68, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      overflow: hidden;
+      letter-spacing: 0.02em;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1;
+    }
+
+    .btn-test-ai-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -130%;
+      width: 70%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+      transform: skewX(-25deg);
+      animation: shimmerSweep 2.8s infinite 0.4s;
+      pointer-events: none;
+    }
+
+    .btn-test-ai-hero:hover {
+      transform: translateY(-4px) scale(1.035);
+      box-shadow: 0 14px 38px rgba(239, 68, 68, 0.65), 0 0 28px rgba(245, 158, 11, 0.75);
+      border-color: #FFFFFF;
+      color: #FFFFFF !important;
+    }
+
+    .btn-test-ai-hero .hero-sparkle-icon {
+      font-size: 1.25rem;
+      color: #FEF08A;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      animation: sparkleTwinkle 2.2s infinite ease-in-out;
+    }
+
+    .btn-test-ai-hero .hero-arrow-icon {
+      font-size: 0.95rem;
+      transition: transform 0.25s ease;
+    }
+
+    .btn-test-ai-hero:hover .hero-arrow-icon {
+      transform: translateX(4px);
+    }
+
+    .btn-test-ai-hero .hero-pill-badge {
+      background: rgba(0, 0, 0, 0.25);
+      color: #FEF08A;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(254, 240, 138, 0.45);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    /* 3. NÚT KHÓA HỌC TRÊN HERO (SECONDARY CTA - Dịu nhẹ, hài hòa, không lấn át Test AI) */
+    .btn-courses-hero {
+      background: rgba(255, 255, 255, 0.09);
+      color: #FFFFFF !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.32);
+      backdrop-filter: blur(10px);
+      font-size: 1.02rem;
+      font-weight: 600;
+      padding: 15px 24px;
+      border-radius: var(--radius-lg);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-courses-hero:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.65);
+      transform: translateY(-2px);
+      color: #FFFFFF !important;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-courses-hero i {
+      color: #93C5FD;
+      font-size: 1.05rem;
+    }
+
+    /* 4. Nút Khởi Động Survey trong Màn 0 (Đồng bộ gradient rực rỡ) */
+    #btn-start-survey {
+      background: linear-gradient(135deg, #FF6B00 0%, #F59E0B 50%, #EF4444 100%);
+      background-size: 200% 200%;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #btn-start-survey:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(239, 68, 68, 0.55);
+    }
+
+    /* Keyframe Animations */
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes pulseHeroGlow {
+      0%, 100% {
+        box-shadow: 0 8px 26px rgba(245, 158, 11, 0.5), 0 0 0 0 rgba(245, 158, 11, 0.55);
+      }
+      50% {
+        box-shadow: 0 12px 34px rgba(239, 68, 68, 0.68), 0 0 0 10px rgba(245, 158, 11, 0);
+      }
+    }
+
+    @keyframes pulseGlowHeader {
+      0%, 100% {
+        box-shadow: 0 4px 14px rgba(245, 158, 11, 0.45);
+      }
+      50% {
+        box-shadow: 0 4px 22px rgba(239, 68, 68, 0.65);
+      }
+    }
+
+    @keyframes shimmerSweep {
+      0% { left: -130%; }
+      22%, 100% { left: 160%; }
+    }
+
+    @keyframes sparkleTwinkle {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+      50% { transform: scale(1.25) rotate(18deg); opacity: 0.88; }
+    }
+
+    /* Responsive cho Hero CTA trên thiết bị di động */
+    @media (max-width: 768px) {
+      .hero-cta-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .btn-test-ai-hero, .btn-courses-hero {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 20px;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -49,8 +276,11 @@
         </nav>
 
         <div class="header-actions">
-          <a href="#survey-section" class="btn btn-primary btn-sm">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> Làm bài test & Nhận lộ trình
+          <!-- Nút Test AI Nổi Bật Trên Header -->
+          <a href="#survey-section" class="btn btn-test-ai-header">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Làm bài Test & Nhận lộ trình</span>
+            <span class="header-badge-free">Free</span>
           </a>
           <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
             <i class="fa-solid fa-bars"></i>
@@ -60,7 +290,7 @@
     </div>
   </header>
 
-  <!-- ==================== 2. HERO SECTION (VỚI ẢNH BANNER CHÍNH THỨC) ==================== -->
+  <!-- ==================== 2. HERO SECTION (VỚI NÚT TEST AI NỔI BẬT ƯU TIÊN SỐ 1) ==================== -->
   <section class="hero-section" id="hero">
     <div class="container">
       <div class="hero-grid">
@@ -95,12 +325,16 @@
             </div>
           </div>
 
+          <!-- NHÓM NÚT BẤM CTA: NÚT TEST AI ĐỨNG ĐẦU & NỔI BẬT VƯỢT TRỘI -->
           <div class="hero-cta-group">
-            <a href="#courses" class="btn btn-success btn-lg">
-              <i class="fa-solid fa-layer-group"></i> Khám phá Khóa học
+            <a href="#survey-section" class="btn btn-test-ai-hero btn-lg">
+              <i class="fa-solid fa-wand-magic-sparkles hero-sparkle-icon"></i>
+              <span>LÀM BÀI TEST AI 2 PHÚT</span>
+              <span class="hero-pill-badge">Miễn phí</span>
+              <i class="fa-solid fa-arrow-right hero-arrow-icon"></i>
             </a>
-            <a href="#survey-section" class="btn btn-outline-white btn-lg">
-              <i class="fa-solid fa-clipboard-check"></i> Làm bài Test AI 2 Phút
+            <a href="#courses" class="btn btn-courses-hero btn-lg">
+              <i class="fa-solid fa-layer-group"></i> Khám phá Khóa học
             </a>
           </div>
         </div>
@@ -287,6 +521,7 @@
 
                 <div style="margin-top: 2rem;">
                   <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-start-survey">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color:#FEF08A; margin-right:4px;"></i>
                     <span>BẮT ĐẦU ĐÁNH GIÁ NĂNG LỰC AI</span>
                     <i class="fa-solid fa-arrow-right"></i>
                   </button>
