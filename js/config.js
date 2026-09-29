@@ -6,7 +6,7 @@
 window.EDUAI_CONFIG = {
   // Google Analytics 4: Admin GA4 → Data Streams → Web → "Measurement ID" (dạng G-ABC123XYZ).
   // Để nguyên 'G-XXXXXXXXXX' thì GA4 không tải (không phát sinh request/lỗi).
-  GA4_MEASUREMENT_ID: 'G-XXXXXXXXXX',
+  GA4_MEASUREMENT_ID: 'G-49M4E4BW3G',
 
   // Đăng nhập Google: Google Cloud Console → APIs & Services → Credentials →
   // OAuth client ID (Web application) → thêm Authorized JavaScript origins:
