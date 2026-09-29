@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng học viên — EduAI Teacher Hub</title>
+  <meta name="description" content="Cổng học viên EduAI Teacher Hub: lịch học Zoom, tiến trình học tập và kho video xem lại.">
+  <meta name="robots" content="noindex">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+
+  <!-- Google Analytics 4 (GA4) — điền Measurement ID trong js/config.js -->
+  <script src="js/config.js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    (function () {
+      var id = (window.EDUAI_CONFIG || {}).GA4_MEASUREMENT_ID;
+      if (!id || /X{4,}/.test(id)) return;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(id);
+      document.head.appendChild(s);
+      gtag('js', new Date());
+      gtag('config', id);
+    })();
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Be Vietnam Pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 CDN Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body data-page="student">
+
+  <!-- ==================== HEADER NAVBAR NGANG (dùng chung index.html / student.html / admin.html) ==================== -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="EduAI Teacher Hub — Trang chủ">
+        <span class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+        <span class="brand-text">
+          <strong>EduAI Teacher Hub</strong>
+          <span>Đào tạo AI dành cho Giáo viên</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" id="main-nav" aria-label="Điều hướng chính">
+        <ul class="nav-menu">
+          <li class="nav-item" data-nav="home">
+            <div class="nav-row">
+              <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Trang chủ</a>
+              <button type="button" class="nav-caret" data-dd-toggle data-gate-exempt aria-expanded="false" aria-label="Mục con của Trang chủ"><i class="fa-solid fa-chevron-down"></i></button>
+            </div>
+            <ul class="nav-dropdown">
+              <li><a href="index.html#about"><span class="dd-icon"><i class="fa-solid fa-award"></i></span><span class="dd-text"><strong>Giới thiệu</strong><small>Vì sao chọn EduAI Teacher Hub</small></span></a></li>
+              <li><a href="index.html#survey-section"><span class="dd-icon"><i class="fa-solid fa-route"></i></span><span class="dd-text"><strong>Khảo sát &amp; Lộ trình</strong><small>Đánh giá năng lực AI, nhận lộ trình riêng</small></span></a></li>
+              <li><a href="index.html#forum"><span class="dd-icon"><i class="fa-solid fa-comments"></i></span><span class="dd-text"><strong>Diễn đàn</strong><small>Chia sẻ prompt &amp; kinh nghiệm dạy học</small></span></a></li>
+              <li><a href="index.html#contact"><span class="dd-icon"><i class="fa-solid fa-headset"></i></span><span class="dd-text"><strong>Liên hệ</strong><small>Zalo, Hotline, Email hỗ trợ</small></span></a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item" data-nav="courses">
+            <div class="nav-row">
+              <a href="index.html#courses" class="nav-link"><i class="fa-solid fa-layer-group"></i> Khóa học</a>
+              <button type="button" class="nav-caret" data-dd-toggle data-gate-exempt aria-expanded="false" aria-label="Mục con của Khóa học"><i class="fa-solid fa-chevron-down"></i></button>
+            </div>
+            <ul class="nav-dropdown dd-wide">
+              <li class="dd-full"><a href="index.html#courses"><span class="dd-icon"><i class="fa-solid fa-grip"></i></span><span class="dd-text"><strong>Tất cả các khóa học</strong><small>Học phí ưu đãi 299.000đ – 599.000đ, học Online qua Zoom</small></span></a></li>
+              <li><a href="index.html?loc=giao_an#courses"><span class="dd-icon"><i class="fa-solid fa-book-bookmark"></i></span><span class="dd-text"><strong>Soạn Giáo án 5512</strong><small>499.000đ</small></span></a></li>
+              <li><a href="index.html?loc=slide_hoclieu#courses"><span class="dd-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span><span class="dd-text"><strong>Slide &amp; Học liệu</strong><small>399.000đ</small></span></a></li>
+              <li><a href="index.html?loc=khao_thi#courses"><span class="dd-icon"><i class="fa-solid fa-list-check"></i></span><span class="dd-text"><strong>Ma trận Đề thi</strong><small>449.000đ</small></span></a></li>
+              <li><a href="index.html?loc=video_ai#courses"><span class="dd-icon"><i class="fa-solid fa-video"></i></span><span class="dd-text"><strong>Video Bài giảng AI</strong><small>549.000đ</small></span></a></li>
+              <li><a href="index.html?loc=chu_nhiem#courses"><span class="dd-icon"><i class="fa-solid fa-user-pen"></i></span><span class="dd-text"><strong>Chủ nhiệm &amp; Nhận xét</strong><small>349.000đ</small></span></a></li>
+              <li><a href="index.html?loc=skkn#courses"><span class="dd-icon"><i class="fa-solid fa-lightbulb"></i></span><span class="dd-text"><strong>Sáng kiến kinh nghiệm</strong><small>599.000đ</small></span></a></li>
+              <li><a href="index.html?loc=game_app#courses"><span class="dd-icon"><i class="fa-solid fa-gamepad"></i></span><span class="dd-text"><strong>Trò chơi học tập</strong><small>499.000đ</small></span></a></li>
+              <li><a href="index.html?loc=hanh_chinh#courses"><span class="dd-icon"><i class="fa-solid fa-folder-open"></i></span><span class="dd-text"><strong>Hành chính &amp; Tài liệu</strong><small>299.000đ</small></span></a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item" data-nav="student">
+            <div class="nav-row">
+              <a href="student.html" class="nav-link"><i class="fa-solid fa-user-graduate"></i> Cổng học viên</a>
+              <button type="button" class="nav-caret" data-dd-toggle data-gate-exempt aria-expanded="false" aria-label="Mục con của Cổng học viên"><i class="fa-solid fa-chevron-down"></i></button>
+            </div>
+            <ul class="nav-dropdown">
+              <li><a href="student.html#schedule-panel"><span class="dd-icon"><i class="fa-solid fa-calendar-days"></i></span><span class="dd-text"><strong>Lịch học Zoom</strong><small>Buổi học sắp tới &amp; link vào lớp</small></span></a></li>
+              <li><a href="student.html#progress-panel"><span class="dd-icon"><i class="fa-solid fa-chart-simple"></i></span><span class="dd-text"><strong>Tiến trình học tập</strong><small>Theo dõi từng khóa đã đăng ký</small></span></a></li>
+              <li><a href="student.html#video-panel"><span class="dd-icon"><i class="fa-solid fa-circle-play"></i></span><span class="dd-text"><strong>Kho video xem lại</strong><small>Bản ghi Zoom, xem lại trọn đời</small></span></a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item" data-nav="admin">
+            <div class="nav-row">
+              <a href="admin.html" class="nav-link" data-gate-exempt><i class="fa-solid fa-chart-line"></i> Quản lý <i class="fa-solid fa-lock nav-lock" title="Dành cho quản trị viên"></i></a>
+              <button type="button" class="nav-caret" data-dd-toggle data-gate-exempt aria-expanded="false" aria-label="Mục con của Quản lý"><i class="fa-solid fa-chevron-down"></i></button>
+            </div>
+            <ul class="nav-dropdown">
+              <li><a href="admin.html#hoc-vien" data-gate-exempt><span class="dd-icon"><i class="fa-solid fa-address-book"></i></span><span class="dd-text"><strong>Quản lý học viên</strong><small>Dashboard Lead, xác nhận thanh toán</small></span></a></li>
+              <li><a href="admin.html#doanh-thu" data-gate-exempt><span class="dd-icon"><i class="fa-solid fa-sack-dollar"></i></span><span class="dd-text"><strong>Báo cáo doanh thu</strong><small>Doanh thu theo tháng &amp; theo khóa</small></span></a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <div id="header-user"></div>
+        <button type="button" class="nav-toggle-btn" id="nav-toggle" aria-label="Mở menu" aria-controls="main-nav" aria-expanded="false" data-gate-exempt>
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-main" id="main-content">
+    <div class="page-titlebar">
+      <div class="container page-titlebar-inner">
+        <div>
+          <h1 class="page-title"><i class="fa-solid fa-user-graduate"></i> Cổng học viên</h1>
+          <p class="page-sub">Lịch học Zoom, tiến trình học tập &amp; kho video xem lại</p>
+        </div>
+        <div class="page-actions">
+          <a href="index.html#courses" class="btn btn-secondary btn-sm btn-icon" title="Xem thêm khóa học">
+            <i class="fa-solid fa-layer-group"></i> <span class="btn-label-hide-sm">Thêm khóa học</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chưa đăng nhập: khung khóa + modal đăng nhập tự mở (js/site.js) -->
+    <section class="locked-wrap" id="student-locked">
+      <div class="container">
+        <div class="panel locked-card">
+          <div class="logo-icon"><i class="fa-solid fa-lock"></i></div>
+          <h2>Đăng nhập để vào Cổng học viên</h2>
+          <p>Xem lịch học Zoom, link vào lớp, tiến trình học tập và kho video xem lại của Thầy/Cô.</p>
+          <button type="button" class="btn btn-primary btn-lg btn-block" id="btn-student-login">
+            <i class="fa-solid fa-right-to-bracket"></i> Đăng nhập / Đăng ký
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div id="student-portal" hidden>
+      <div class="portal-main">
+        <div class="container">
+          <!-- Chào mừng + Buổi học kế tiếp -->
+          <section class="student-hero">
+            <div>
+              <h2 id="hero-greeting">Xin chào Thầy/Cô!</h2>
+              <p id="hero-sub">Chúc Thầy/Cô một ngày dạy học thật nhẹ nhàng cùng AI.</p>
+              <span class="student-id-chip"><i class="fa-solid fa-id-badge"></i> <span id="hero-student-id">—</span></span>
+            </div>
+            <div class="next-class-card" id="next-class-card"></div>
+          </section>
+
+          <div class="student-layout">
+            <div class="student-main">
+              <!-- Lịch học -->
+              <section class="panel" id="schedule-panel">
+                <div class="panel-head">
+                  <div>
+                    <h2 class="panel-title"><i class="fa-solid fa-calendar-days"></i> Lịch học Zoom sắp tới</h2>
+                    <div class="panel-sub">Ngày có lớp được tô nổi bật. Bấm vào ngày để xem buổi học.</div>
+                  </div>
+                </div>
+                <div class="schedule-layout">
+                  <div>
+                    <div class="cal-head">
+                      <strong id="cal-title">—</strong>
+                      <div class="cal-nav">
+                        <button type="button" id="cal-prev" aria-label="Tháng trước"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button type="button" id="cal-next" aria-label="Tháng sau"><i class="fa-solid fa-chevron-right"></i></button>
+                      </div>
+                    </div>
+                    <div class="cal-grid" id="cal-grid"></div>
+                    <div class="cal-legend">
+                      <span><i style="background:var(--primary-600);"></i> Buổi sắp học</span>
+                      <span><i style="background:var(--primary-100);"></i> Đã học</span>
+                      <span><i style="border:1.5px solid var(--primary-500);"></i> Hôm nay</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 style="font-size:0.95rem; margin-bottom:0.75rem;" id="session-list-title">Các buổi sắp tới</h3>
+                    <ul class="session-list" id="session-list"></ul>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Tiến trình -->
+              <section class="panel" id="progress-panel">
+                <div class="panel-head">
+                  <h2 class="panel-title"><i class="fa-solid fa-chart-simple"></i> Tiến trình học tập</h2>
+                </div>
+                <div id="progress-list"></div>
+              </section>
+
+              <!-- Kho video -->
+              <section class="panel" id="video-panel">
+                <div class="panel-head">
+                  <div>
+                    <h2 class="panel-title"><i class="fa-solid fa-circle-play"></i> Kho video xem lại</h2>
+                    <div class="panel-sub">Bản ghi Zoom được cập nhật sau mỗi buổi học, xem lại trọn đời.</div>
+                  </div>
+                </div>
+                <div id="video-library"></div>
+              </section>
+            </div>
+
+            <aside class="student-side">
+              <section class="panel profile-card" id="profile-card"></section>
+
+              <section class="panel">
+                <h2 class="panel-title" style="margin-bottom:0.75rem;"><i class="fa-solid fa-headset"></i> Hỗ trợ học viên</h2>
+                <p class="panel-sub" style="margin-bottom:1rem;">Gặp khó khăn khi vào lớp hoặc thanh toán? Đội ngũ hỗ trợ 8:00 – 21:00 mỗi ngày.</p>
+                <a href="https://zalo.me/g/eduai_teacher" target="_blank" rel="noopener" class="btn btn-primary btn-block btn-sm" style="min-height:44px;">
+                  <i class="fa-solid fa-comments"></i> Nhóm Zalo Học viên
+                </a>
+                <a href="tel:0988123456" class="btn btn-secondary btn-block btn-sm" style="min-height:44px; margin-top:8px;">
+                  <i class="fa-solid fa-phone"></i> Hotline 0988.123.456
+                </a>
+              </section>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="mini-footer">
+    <div class="container mini-footer-inner">
+      <span>&copy; 2026 EduAI Teacher Hub &middot; Trung tâm Đào tạo AI dành cho Giáo viên</span>
+      <nav class="mini-footer-links" aria-label="Liên kết chân trang">
+        <a href="index.html">Trang chủ</a>
+        <a href="#" data-policy="privacy">Chính sách bảo mật</a>
+        <a href="#" data-policy="terms">Điều khoản sử dụng</a>
+        <a href="tel:0988123456">Hotline 0988.123.456</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL XEM LẠI VIDEO BUỔI HỌC ==================== -->
+  <div class="modal-backdrop" id="recording-modal">
+    <div class="video-modal-box">
+      <div class="video-modal-header">
+        <div class="video-modal-title" id="recording-title"><i class="fa-solid fa-circle-play"></i> Video buổi học</div>
+        <button type="button" class="video-modal-close-btn" id="recording-close" title="Đóng video">&times;</button>
+      </div>
+      <div class="video-player-container">
+        <video id="recording-player" class="video-player-frame" controls playsinline preload="none"></video>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/lead-model.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/telegram.js"></script>
+  <script src="js/site.js"></script>
+  <script src="js/student.js"></script>
+</body>
+</html>

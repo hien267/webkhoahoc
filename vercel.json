@@ -1,0 +1,8 @@
+{
+  "redirects": [
+    { "source": "/admin", "destination": "/admin.html", "permanent": false },
+    { "source": "/quan-ly", "destination": "/admin.html", "permanent": false },
+    { "source": "/student", "destination": "/student.html", "permanent": false },
+    { "source": "/hoc-vien", "destination": "/student.html", "permanent": false }
+  ]
+}

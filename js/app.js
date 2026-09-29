@@ -34,11 +34,8 @@
     recommendations: [],
     selectedCourseForCheckout: null,
     forumPosts: [...FORUM_POSTS_DATA],
-    leads: [],
     unlockedCourseId: null
   };
-
-  const LEADS_STORAGE_KEY = 'eduai_leads_data';
 
   // DOM Cache
   const DOM = {
@@ -71,8 +68,7 @@
       backToStep0: document.getElementById('btn-back-to-step0'),
       backToStep1: document.getElementById('btn-back-to-step1'),
       retakeSurvey: document.getElementById('btn-retake-survey'),
-      resetSurvey: document.getElementById('btn-reset-survey'),
-      mobileMenuToggle: document.getElementById('mobile-menu-toggle')
+      resetSurvey: document.getElementById('btn-reset-survey')
     },
     modals: {
       checkout: {
@@ -93,13 +89,15 @@
 
   function init() {
     loadSavedState();
-    loadLeads();
-    renderEcomCoursesGrid("all");
+    syncUserFromAuth();
+    renderEcomCoursesGrid(courseFilterFromUrl());
     renderStep1Questions();
     renderStep2Questions();
     renderForumPosts();
     attachEventListeners();
-    updateUIForStep(state.currentStep);
+    window.addEventListener('eduai:auth', onAuthChange);
+    // Đã đăng nhập và có SĐT thì bỏ qua Màn 0, vào thẳng câu hỏi Bước 1
+    updateUIForStep(EduStore.getUser() && state.user.phone ? 1 : state.currentStep);
   }
 
   function loadSavedState() {
@@ -140,14 +138,16 @@
     if (confirm("Thầy/Cô có chắc chắn muốn xóa toàn bộ dữ liệu khảo sát và làm lại từ đầu không?")) {
       localStorage.removeItem('eduai_survey_state');
       state.user = { fullName: "", email: "", phone: "" };
+      syncUserFromAuth();
       state.step1Data = { gradeLevel: "", subject: "", institutionType: "", experienceYears: "", aiUsageStatus: "", aiToolsUsed: [], aiSelfRating: "1" };
       state.step2Data = { aiSupportNeeds: [], primaryApplicationArea: "", primaryGoal: "", challenges: "", preferredLearningStyle: "", readinessLevel: "" };
       state.recommendations = [];
 
       if (DOM.forms.loginForm) DOM.forms.loginForm.reset();
+      prefillStep0Form();
       renderStep1Questions();
       renderStep2Questions();
-      updateUIForStep(0);
+      updateUIForStep(state.user.phone ? 1 : 0);
       showToast("Đã làm mới toàn bộ dữ liệu khảo sát!", "info");
     }
   }
@@ -389,13 +389,7 @@
   // ==========================================
 
   function attachEventListeners() {
-    // 1. Mobile Menu Toggle
-    if (DOM.buttons.mobileMenuToggle) {
-      DOM.buttons.mobileMenuToggle.addEventListener('click', function () {
-        const nav = document.getElementById('nav-menu');
-        if (nav) nav.classList.toggle('mobile-open');
-      });
-    }
+    // 1. Header navbar & đăng nhập do js/site.js xử lý
 
     // 2. Filter Buttons for Courses
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -419,18 +413,20 @@
         if (!fullName) { showFieldError('input-fullname', 'Vui lòng nhập họ và tên'); isValid = false; }
         else clearFieldError('input-fullname');
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email || !emailRegex.test(email)) { showFieldError('input-email', 'Gmail không hợp lệ'); isValid = false; }
+        if (!EduStore.validate.email(email)) { showFieldError('input-email', 'Gmail không hợp lệ'); isValid = false; }
         else clearFieldError('input-email');
 
-        const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
-        if (!phone || !phoneRegex.test(phone.replace(/\s+/g, ''))) { showFieldError('input-phone', 'SĐT Việt Nam không hợp lệ (10 số)'); isValid = false; }
+        if (!EduStore.validate.phone(phone)) { showFieldError('input-phone', 'SĐT Việt Nam không hợp lệ (10 số)'); isValid = false; }
         else clearFieldError('input-phone');
 
         if (!isValid) return;
 
-        state.user = { fullName, email, phone };
+        state.user = { fullName, email, phone: EduLeadModel.normalizePhone(phone) };
         saveState();
+        if (EduStore.getUser()) {
+          EduStore.setUser({ fullName, email, phone: state.user.phone });
+          EduStore.upsertLead({ fullName, email, phone: state.user.phone });
+        }
         showToast(`Xin chào Thầy/Cô ${fullName}! Bắt đầu khảo sát.`, 'success');
         updateUIForStep(1);
 
@@ -582,21 +578,22 @@
         createConfetti();
 
         const topCourse = state.recommendations[0];
-        upsertLead({
+        EduStore.upsertLead({
           fullName: state.user.fullName,
           phone: state.user.phone,
           email: state.user.email,
-          courseId: topCourse ? topCourse.id : null,
-          courseTitle: topCourse ? topCourse.title : 'Chưa xác định',
-          matchRate: topCourse ? topCourse.matchRate : null,
-          status: 'unpaid'
+          interestedCourseId: topCourse ? topCourse.id : '',
+          interestedCourseTitle: topCourse ? topCourse.title : '',
+          matchRate: topCourse ? topCourse.matchRate : null
         });
+        EduStore.track('generate_lead', { course_id: topCourse ? topCourse.id : '', match_rate: topCourse ? topCourse.matchRate : 0 });
 
         if (typeof sendTelegramNotification === 'function') {
           sendTelegramNotification({
             eventType: 'khao_sat_hoan_thanh',
             fullName: state.user.fullName,
             phone: state.user.phone,
+            email: state.user.email,
             courseTitle: topCourse ? topCourse.title : 'Chưa xác định',
             matchRate: topCourse ? topCourse.matchRate : null,
             status: 'unpaid'
@@ -844,8 +841,7 @@
     DOM.modals.checkout.checkoutView.style.display = 'block';
     DOM.modals.checkout.successView.style.display = 'none';
 
-    const phone = state.user.phone || "0988888888";
-    const transferContent = `EDUAI ${course.code} ${phone.slice(-4)}`;
+    const transferContent = `EDUAI ${course.code} ${getTransferSuffix()}`;
     const qrUrl = `https://img.vietqr.io/image/MB-${BANK_CONFIG.accountNumber}-compact2.png?amount=${course.price}&addInfo=${encodeURIComponent(transferContent)}&accountName=${encodeURIComponent(BANK_CONFIG.accountHolder)}`;
 
     DOM.modals.checkout.checkoutView.innerHTML = `
@@ -910,6 +906,14 @@
     }
 
     DOM.modals.checkout.backdrop.classList.add('active');
+    EduStore.track('begin_checkout', { currency: 'VND', value: course.price, items: [{ item_id: course.id, item_name: course.title, price: course.price }] });
+  }
+
+  function getTransferSuffix() {
+    const digits = (state.user.phone || '').replace(/\D/g, '');
+    if (digits.length >= 4) return digits.slice(-4);
+    // Đăng nhập Google chưa có SĐT: lấy 4 ký tự đầu email để vẫn đối soát được
+    return (state.user.email || 'GV00').replace(/[^a-z0-9]/gi, '').slice(0, 4).toUpperCase();
   }
 
   function closeCheckoutModal() {
@@ -926,9 +930,9 @@
     DOM.modals.checkout.successView.innerHTML = `
       <div class="success-zoom-card">
         <div class="success-badge-icon"><i class="fa-solid fa-check"></i></div>
-        <h3 style="font-size:1.5rem; color:var(--primary-900); margin-bottom:4px;">Đăng Ký & Kích Hoạt Thành Công!</h3>
+        <h3 style="font-size:1.5rem; color:var(--primary-900); margin-bottom:4px;">Đã Ghi Nhận Đăng Ký!</h3>
         <p style="color:var(--slate-600); font-size:0.92rem; margin-bottom:1rem;">
-          Chào mừng Thầy/Cô <strong>${escapeHtml(state.user.fullName || 'Giáo viên')}</strong> đã kích hoạt thành công khóa học!
+          Cảm ơn Thầy/Cô <strong>${escapeHtml(state.user.fullName || 'Giáo viên')}</strong>! Trung tâm sẽ đối soát chuyển khoản và xác nhận trong ít phút. Lịch học &amp; link Zoom đã có sẵn trong <a href="student.html" style="font-weight:700;">Cổng học viên</a>.
         </p>
 
         <div class="student-id-pill">
@@ -970,39 +974,48 @@
           </a>
         </div>
 
-        <div style="display:flex; gap:10px; margin-top:1rem;">
-          <a href="https://zalo.me/g/eduai_teacher" target="_blank" class="btn btn-secondary" style="flex:1;">
-            <i class="fa-solid fa-comments"></i> Tham gia Nhóm Zalo Hỗ Trợ 1:1
+        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:1rem;">
+          <a href="student.html" class="btn btn-primary" style="flex:1 1 180px;">
+            <i class="fa-solid fa-user-graduate"></i> Vào Cổng Học Viên
           </a>
-          <button class="btn btn-outline" style="flex:1;" onclick="document.getElementById('checkout-modal').classList.remove('active');">
+          <a href="https://zalo.me/g/eduai_teacher" target="_blank" rel="noopener" class="btn btn-secondary" style="flex:1 1 180px;">
+            <i class="fa-solid fa-comments"></i> Nhóm Zalo Hỗ Trợ 1:1
+          </a>
+          <button class="btn btn-outline" style="flex:1 1 100%;" onclick="document.getElementById('checkout-modal').classList.remove('active');">
             Đóng cửa sổ
           </button>
         </div>
       </div>
     `;
 
-    upsertLead({
+    const matchRate = (state.recommendations.find(r => r.id === course.id) || {}).matchRate || null;
+    EduStore.upsertLead({
       fullName: state.user.fullName,
       phone: state.user.phone,
       email: state.user.email,
-      courseId: course.id,
-      courseTitle: course.title,
-      matchRate: (state.recommendations.find(r => r.id === course.id) || {}).matchRate || null,
-      status: 'paid'
+      enrollment: {
+        courseId: course.id,
+        courseTitle: course.title,
+        amount: course.price,
+        transactionId: studentId
+      }
     });
+    EduStore.track('add_payment_info', { currency: 'VND', value: course.price, transaction_id: studentId, items: [{ item_id: course.id, item_name: course.title, price: course.price }] });
 
     if (typeof sendTelegramNotification === 'function') {
       sendTelegramNotification({
         eventType: 'xac_nhan_thanh_toan',
         fullName: state.user.fullName,
         phone: state.user.phone,
+        email: state.user.email,
         courseTitle: course.title,
-        matchRate: (state.recommendations.find(r => r.id === course.id) || {}).matchRate || null,
-        status: 'paid',
+        matchRate,
+        amount: course.price,
+        status: 'pending',
         transactionId: studentId
       });
     }
-    showToast('Đã xác nhận thanh toán và gửi thông báo tới đội Sales qua Telegram!', 'success');
+    showToast('Đã ghi nhận chuyển khoản! Trung tâm sẽ xác nhận trong ít phút.', 'success');
     state.unlockedCourseId = course.id;
 
     createConfetti();
@@ -1072,72 +1085,54 @@
   };
 
   // ==========================================
-  // BẢNG QUẢN LÝ LEAD (MINI ADMIN DASHBOARD) & WEBHOOK SALES
+  // ĐỒNG BỘ ĐĂNG NHẬP
+  // Modal đăng nhập, Google Sign-In và Gated Access nằm trong js/site.js (dùng chung 3 trang).
+  // Trang chủ chỉ lắng nghe 'eduai:auth' để cập nhật thông tin khảo sát theo tài khoản.
   // ==========================================
 
-  function loadLeads() {
-    try {
-      const saved = localStorage.getItem(LEADS_STORAGE_KEY);
-      state.leads = saved ? JSON.parse(saved) : [];
-    } catch (e) {
-      state.leads = [];
-    }
-  }
-
-  function saveLeads() {
-    try {
-      localStorage.setItem(LEADS_STORAGE_KEY, JSON.stringify(state.leads));
-    } catch (e) {
-      console.warn('Không thể lưu danh sách Lead vào localStorage:', e);
-    }
-  }
-
-  function upsertLead(data) {
-    const phoneKey = (data.phone || '').replace(/\s+/g, '');
-    let lead = phoneKey ? state.leads.find(l => (l.phone || '').replace(/\s+/g, '') === phoneKey) : null;
-    const now = new Date().toISOString();
-
-    if (lead) {
-      lead.fullName = data.fullName || lead.fullName;
-      lead.email = data.email || lead.email;
-      lead.courseId = data.courseId;
-      lead.courseTitle = data.courseTitle;
-      lead.matchRate = data.matchRate;
-      lead.updatedAt = now;
-      if (data.status === 'paid') {
-        lead.status = 'paid';
-        lead.paidAt = now;
-      } else if (!lead.status) {
-        lead.status = 'unpaid';
-      }
-    } else {
-      lead = {
-        id: `lead_${Date.now()}`,
-        fullName: data.fullName || 'Chưa cung cấp',
-        phone: data.phone || 'Chưa cung cấp',
-        email: data.email || '',
-        courseId: data.courseId,
-        courseTitle: data.courseTitle,
-        matchRate: data.matchRate,
-        status: data.status || 'unpaid',
-        createdAt: now,
-        updatedAt: now,
-        paidAt: data.status === 'paid' ? now : null
+  function syncUserFromAuth() {
+    const authUser = EduStore.getUser();
+    if (authUser) {
+      state.user = {
+        fullName: authUser.fullName || state.user.fullName,
+        email: authUser.email || state.user.email,
+        phone: authUser.phone || state.user.phone
       };
-      state.leads.unshift(lead);
     }
-
-    saveLeads();
-    return lead;
+    prefillStep0Form();
   }
 
-  // Lưu ý: Lead được lưu âm thầm vào localStorage (`eduai_leads_data`) làm bản sao lưu nội bộ,
-  // không hiển thị công khai trên giao diện. Thông báo thời gian thực cho đội Sales đi qua
-  // Telegram (xem hàm sendTelegramNotification, khai báo trong <script> riêng ở cuối index.html).
+  function prefillStep0Form() {
+    const values = { 'input-fullname': state.user.fullName, 'input-email': state.user.email, 'input-phone': state.user.phone };
+    Object.keys(values).forEach(id => {
+      const input = document.getElementById(id);
+      if (input && values[id]) input.value = values[id];
+    });
+  }
 
-  // Lưu ý: hàm gửi thông báo Telegram thực tế (sendTelegramNotification) được khai báo
-  // trong <script> riêng ở cuối file index.html, ngay dưới 2 biến cấu hình
-  // TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID, để bạn dễ tìm và điền thông tin Bot của mình.
+  function onAuthChange(e) {
+    if (!e.detail) {
+      // Đăng xuất: xóa thông tin cá nhân khỏi khảo sát, giữ lại câu trả lời
+      state.user = { fullName: "", email: "", phone: "" };
+      saveState();
+      if (DOM.forms.loginForm) DOM.forms.loginForm.reset();
+      updateUIForStep(0);
+      return;
+    }
+    syncUserFromAuth();
+    saveState();
+    // Đã có SĐT thì bỏ qua Màn 0, vào thẳng câu hỏi Bước 1
+    if (state.currentStep === 0 && state.user.phone) updateUIForStep(1);
+  }
+
+  // Link từ menu "Khóa học" trên header: index.html?loc=<nhóm>#courses → lọc sẵn danh mục
+  function courseFilterFromUrl() {
+    const cat = new URLSearchParams(window.location.search).get('loc');
+    const btn = cat && Array.from(document.querySelectorAll('.filter-btn')).find(b => b.dataset.filter === cat);
+    if (!btn) return 'all';
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+    return cat;
+  }
 
   // ==========================================
   // HELPERS
@@ -1162,7 +1157,7 @@
     const input = document.getElementById(inputId);
     if (!input) return;
     input.classList.add('is-invalid');
-    let err = input.parentElement.querySelector('.form-error-text');
+    const err = (input.closest('.form-group') || input.parentElement).querySelector('.form-error-text');
     if (err) { err.textContent = message; err.classList.add('visible'); }
   }
 
@@ -1170,7 +1165,7 @@
     const input = document.getElementById(inputId);
     if (!input) return;
     input.classList.remove('is-invalid');
-    let err = input.parentElement.querySelector('.form-error-text');
+    const err = (input.closest('.form-group') || input.parentElement).querySelector('.form-error-text');
     if (err) err.classList.remove('visible');
   }
 

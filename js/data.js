@@ -265,7 +265,7 @@ const COURSES_DATA = [
     code: "HANHCHINHAI",
     title: "Quản Lý Tài Liệu, Trợ Lý Ảo & Tự Động Hóa Công Việc Hành Chính",
     shortTitle: "Quản Lý Tài Liệu & Hành Chính AI",
-    badge: "Tiết kiệm 70% thời gian",
+    badge: "Giảm tải áp lực sổ sách",
     categoryFilter: "hanh_chinh",
     category: "Hành chính & Trợ lý",
     price: 299000,
