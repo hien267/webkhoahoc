@@ -17,3 +17,8 @@ desktop.ini
 .vscode/
 .idea/
 *.log
+
+# Tai lieu tro ly AI do Vercel CLI tu them (khong can cho web)
+.agents/
+.claude/
+skills-lock.json
