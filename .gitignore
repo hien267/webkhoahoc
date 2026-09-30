@@ -1,2 +1,19 @@
+# Vercel CLI
 .vercel
+
+# Bien moi truong / mat khau (khong bao gio dua len GitHub)
 .env*
+
+# Thu vien Node (neu sau nay dung npm)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# File rac cua he dieu hanh / trinh soan thao
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.log
