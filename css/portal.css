@@ -1131,6 +1131,256 @@
   min-height: 44px;
 }
 
+/* ==========================================================================
+   ADMIN: CHỐT KHÁCH (SALE), MẬT KHẨU KẾ TOÁN, HOA HỒNG
+   ========================================================================== */
+.students-table { min-width: 1040px; }
+
+.students-table th,
+.students-table td {
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
+/* Email dài thì xuống dòng, nhường chỗ cho cột "Đã chốt được khách" */
+.students-table td:nth-child(3) {
+  max-width: 170px;
+  overflow-wrap: anywhere;
+}
+
+.students-table td.cell-course { min-width: 160px; max-width: 190px; }
+
+.students-table th.num { white-space: normal; }
+
+.tab-lock {
+  font-size: 0.72rem;
+  opacity: 0.7;
+}
+
+.kpi-locked {
+  cursor: pointer;
+}
+
+.kpi-locked .kpi-value {
+  color: var(--slate-400, #94A3B8);
+  letter-spacing: 0.12em;
+}
+
+.kpi-locked:hover,
+.kpi-locked:focus-visible {
+  border-color: var(--primary-500);
+  outline: none;
+}
+
+/* Ô "Đã chốt được khách" */
+.cell-close { min-width: 196px; }
+
+.close-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.close-form .close-select {
+  min-height: 40px;
+  padding: 6px 32px 6px 10px;
+  font-size: 0.84rem;
+}
+
+.close-form .close-upload {
+  min-height: 40px;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.close-form .close-upload:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.close-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin-top: 6px;
+  font-size: 0.8rem;
+}
+
+.sale-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--cyan-50);
+  color: #0E7490;
+  font-weight: 700;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  padding: 6px 2px;
+  min-height: 32px;
+  color: var(--primary-600);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.link-btn:hover { text-decoration: underline; }
+.link-btn.link-danger { color: var(--rose-600); }
+
+/* Popup ảnh minh chứng */
+.proof-modal-box { max-width: 720px; }
+
+.proof-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+  color: var(--slate-600);
+  font-size: 0.9rem;
+}
+
+.proof-img {
+  display: block;
+  max-width: 100%;
+  max-height: 70vh;
+  margin: 0 auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--slate-200);
+}
+
+.proof-loading {
+  padding: 2.5rem 0;
+  text-align: center;
+  color: var(--slate-500);
+}
+
+/* Tab doanh thu: thanh chế độ Kế toán */
+.accountant-bar {
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.accountant-bar > div { flex: 1; }
+
+/* Hoa hồng đội Sale */
+.commission-panel { margin-bottom: 1.25rem; }
+
+.commission-table { min-width: 720px; }
+
+.commission-table tbody tr[data-pick-sale] { cursor: pointer; }
+
+.commission-table tbody tr.is-selected td {
+  background: var(--primary-50);
+}
+
+.commission-table .total-row td {
+  background: var(--slate-50);
+  border-top: 1px solid var(--slate-200);
+}
+
+.commission-val { color: #047857; }
+
+.sale-code {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.82rem;
+  background: var(--slate-100);
+  color: var(--primary-800);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.sale-lookup { margin-bottom: 1rem; }
+
+.sale-lookup > p {
+  font-size: 0.88rem;
+  padding: 0.75rem 0;
+}
+
+.lookup-miss { color: var(--rose-600); }
+
+.lookup-card {
+  border: 1px solid var(--primary-100);
+  background: linear-gradient(135deg, var(--primary-50), var(--white));
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem;
+  animation: fadeSlideIn 0.3s ease;
+}
+
+.lookup-person {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.lookup-person strong {
+  display: block;
+  font-size: 1.05rem;
+  color: var(--primary-800);
+}
+
+.lookup-person small { color: var(--slate-500); }
+
+.lookup-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.lookup-stats > div {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 0.9rem;
+}
+
+.lookup-stats span {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--slate-500);
+  font-weight: 600;
+}
+
+.lookup-stats strong {
+  display: block;
+  font-size: 1.3rem;
+  color: var(--slate-900, #0F172A);
+  font-variant-numeric: tabular-nums;
+  margin: 2px 0;
+}
+
+.lookup-stats small {
+  font-size: 0.74rem;
+  color: var(--slate-500);
+}
+
+.lookup-stats .lookup-highlight {
+  background: var(--emerald-50);
+  border-color: var(--emerald-100);
+}
+
+.lookup-stats .lookup-highlight strong { color: #047857; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 640px) {
+  .lookup-stats { grid-template-columns: 1fr; }
+  .accountant-bar { flex-wrap: wrap; }
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
   .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

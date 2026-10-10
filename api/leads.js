@@ -10,7 +10,9 @@
  * GET    ?id=<leadId>            (công khai)  → chỉ trả trạng thái các khóa của học viên đó
  * GET    header x-admin-key      (quản trị)   → toàn bộ danh sách Lead
  * POST   { lead }                (công khai)  → tạo/gộp Lead; KHÔNG thể tự đánh dấu "đã thanh toán"
- * PATCH  header x-admin-key { action, id, ... } (quản trị) → xác nhận/hủy thanh toán, xóa Lead
+ * GET    ?proof=<leadId> + header x-admin-key (quản trị) → ảnh minh chứng Sale chốt khách (data URL)
+ * PATCH  header x-admin-key { action, id, ... } (quản trị) → xác nhận/hủy thanh toán, xóa Lead,
+ *        ghi nhận Sale chốt khách (set_sale + ảnh minh chứng) / gỡ ghi nhận (clear_sale)
  *
  * Khi chưa cấu hình, luôn trả HTTP 200 kèm { configured: false } để trình duyệt không báo lỗi console.
  */
@@ -18,6 +20,10 @@ const crypto = require('crypto');
 const Model = require('../js/lead-model.js');
 
 const HASH_KEY = 'eduai:leads';
+// Ảnh minh chứng lưu ở hash riêng để danh sách Lead (tải lại mỗi 30s) không bị nặng.
+const PROOF_KEY = 'eduai:sale-proofs';
+const MAX_PROOF_CHARS = 1500000; // ~1.1 MB ảnh — trình duyệt đã nén JPEG trước khi gửi
+const PROOF_RE = /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/;
 const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 const ADMIN_KEY = process.env.ADMIN_KEY || '';
@@ -73,6 +79,12 @@ module.exports = async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
+      if (req.query && req.query.proof) {
+        if (!isAdmin(req)) return res.status(401).json({ ok: false, error: 'Sai mật khẩu quản trị' });
+        if (!validId(req.query.proof)) return res.status(400).json({ ok: false, error: 'id không hợp lệ' });
+        const proof = await redis(['HGET', PROOF_KEY, req.query.proof]);
+        return res.status(200).json({ ok: true, proof: proof || '' });
+      }
       if (req.query && req.query.id) {
         if (!validId(req.query.id)) return res.status(200).json({ ok: false });
         const lead = await getLead(req.query.id);
@@ -110,6 +122,7 @@ module.exports = async function handler(req, res) {
 
       if (body.action === 'delete') {
         await redis(['HDEL', HASH_KEY, body.id]);
+        await redis(['HDEL', PROOF_KEY, body.id]);
         return res.status(200).json({ ok: true });
       }
 
@@ -127,6 +140,25 @@ module.exports = async function handler(req, res) {
           }
         }, { allowPaid: true });
         await saveLead(lead);
+        return res.status(200).json({ ok: true, lead });
+      }
+
+      if (body.action === 'set_sale') {
+        const proof = String(body.proof || '');
+        if (!proof || proof.length > MAX_PROOF_CHARS || !PROOF_RE.test(proof)) {
+          return res.status(400).json({ ok: false, error: 'Thiếu ảnh minh chứng hoặc ảnh quá lớn' });
+        }
+        const result = Model.setSaleClose(existing, body.saleId);
+        if (!result.ok) return res.status(409).json({ ok: false, error: result.error });
+        await redis(['HSET', PROOF_KEY, body.id, proof]);
+        await saveLead(result.lead);
+        return res.status(200).json({ ok: true, lead: result.lead });
+      }
+
+      if (body.action === 'clear_sale') {
+        const lead = Model.clearSaleClose(existing);
+        await saveLead(lead);
+        await redis(['HDEL', PROOF_KEY, body.id]);
         return res.status(200).json({ ok: true, lead });
       }
 

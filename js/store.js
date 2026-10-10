@@ -277,6 +277,7 @@
     fetchCloudEnrollments,
     adminMode,
     verifyAdminKey,
+    sha256Hex,
     getAdminSession,
     setAdminSession,
     validate,

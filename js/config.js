@@ -21,5 +21,9 @@ window.EDUAI_CONFIG = {
   // Mặc định là mã băm của "abc". Đổi mật khẩu: mở Console trình duyệt, chạy
   //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('matkhaumoi')).then(b => console.log([...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('')))
   // rồi dán kết quả vào đây. Khi đã bật cloud (Upstash + ADMIN_KEY trên Vercel), mật khẩu là giá trị ADMIN_KEY.
-  ADMIN_PASSWORD_SHA256: 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'
+  ADMIN_PASSWORD_SHA256: 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad',
+
+  // Mật khẩu Kế toán — mở tab "Báo cáo doanh thu" & bảng hoa hồng Sale trong admin.html (cả chế độ Cloud lẫn Cục bộ).
+  // Mặc định là mã băm của "xyz". Đổi mật khẩu: tạo mã băm như hướng dẫn ở trên rồi dán vào đây.
+  ACCOUNTANT_PASSWORD_SHA256: '3608bca1e44ea6c4d268eb6db02260269892c0b42b86bbf1e77a6fa16c3c9282'
 };

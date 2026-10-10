@@ -166,7 +166,7 @@
             <i class="fa-solid fa-users"></i> Quản lý học viên
           </button>
           <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="revenue">
-            <i class="fa-solid fa-sack-dollar"></i> Báo cáo doanh thu
+            <i class="fa-solid fa-sack-dollar"></i> Báo cáo doanh thu <i class="fa-solid fa-lock tab-lock" id="revenue-tab-lock" title="Cần mật khẩu Kế toán"></i>
           </button>
         </div>
 
@@ -193,7 +193,7 @@
             </div>
 
             <div class="table-wrap">
-              <table class="data-table has-sticky-action">
+              <table class="data-table has-sticky-action students-table">
                 <thead>
                   <tr>
                     <th>Họ tên</th>
@@ -202,6 +202,7 @@
                     <th>Khóa học quan tâm</th>
                     <th>Tình trạng thanh toán</th>
                     <th class="num">Số tiền thanh toán</th>
+                    <th>Đã chốt được khách</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -213,6 +214,59 @@
 
         <!-- TAB: DOANH THU -->
         <section class="tab-panel" id="tab-revenue" role="tabpanel">
+          <!-- Chưa nhập mật khẩu Kế toán: chỉ thấy khung khóa, số liệu KHÔNG được vẽ ra trang -->
+          <div class="panel locked-card" id="revenue-locked">
+            <span class="logo-icon"><i class="fa-solid fa-lock"></i></span>
+            <h2>Khu vực dành cho Kế toán</h2>
+            <p>Báo cáo dòng tiền và bảng tính hoa hồng đội Sale được bảo mật riêng. Vui lòng nhập mật khẩu Kế toán để xem.</p>
+            <button type="button" class="btn btn-primary btn-lg" id="btn-unlock-revenue">
+              <i class="fa-solid fa-key"></i> Nhập mật khẩu Kế toán
+            </button>
+          </div>
+
+          <div id="revenue-content" hidden>
+          <div class="notice notice-info accountant-bar">
+            <i class="fa-solid fa-user-shield"></i>
+            <div><strong>Đang ở chế độ Kế toán.</strong> Đóng trình duyệt hoặc bấm "Khóa lại" để ẩn báo cáo.</div>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-lock-revenue"><i class="fa-solid fa-lock"></i> Khóa lại</button>
+          </div>
+
+          <!-- HOA HỒNG ĐỘI SALE -->
+          <div class="panel commission-panel">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title"><i class="fa-solid fa-hand-holding-dollar"></i> Hoa hồng đội Sale</h2>
+                <div class="panel-sub" id="commission-sub">3% trên giá trị khóa học Sale đã chốt (có ảnh minh chứng) và đã xác nhận thanh toán</div>
+              </div>
+              <div class="toolbar">
+                <div class="input-with-icon search-wrap">
+                  <input type="text" id="sale-code" class="form-control" list="sale-code-list" placeholder="Nhập mã Sale: sale1, sale2..." aria-label="Mã nhân viên Sale" autocomplete="off">
+                  <i class="fa-solid fa-id-badge"></i>
+                  <datalist id="sale-code-list"></datalist>
+                </div>
+                <select id="commission-month" class="form-control form-select" aria-label="Kỳ tính hoa hồng"></select>
+              </div>
+            </div>
+
+            <div id="sale-lookup" class="sale-lookup" aria-live="polite"></div>
+
+            <div class="table-wrap">
+              <table class="data-table commission-table">
+                <thead>
+                  <tr>
+                    <th>Mã Sale</th>
+                    <th>Họ và tên</th>
+                    <th class="num">Khách đã chốt</th>
+                    <th class="num">Khóa đã chốt thành công</th>
+                    <th class="num">Doanh số đã thanh toán</th>
+                    <th class="num">Hoa hồng thực nhận (3%)</th>
+                  </tr>
+                </thead>
+                <tbody id="commission-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
           <div class="revenue-grid">
             <div class="panel">
               <div class="panel-head">
@@ -252,6 +306,7 @@
               </table>
             </div>
           </div>
+          </div>
         </section>
       </div>
     </div>
@@ -279,6 +334,47 @@
       <div class="modal-body" id="lead-modal-body"></div>
     </div>
   </div>
+
+  <!-- ==================== MODAL MẬT KHẨU KẾ TOÁN ==================== -->
+  <div class="modal-backdrop auth-backdrop" id="accountant-modal" role="dialog" aria-modal="true" aria-labelledby="accountant-modal-title">
+    <div class="modal-box auth-modal-box">
+      <button type="button" class="auth-close-btn" id="accountant-modal-close" aria-label="Đóng">&times;</button>
+      <div class="auth-modal-head">
+        <div class="auth-logo"><i class="fa-solid fa-user-shield"></i></div>
+        <h3 id="accountant-modal-title">Xác thực Kế toán</h3>
+        <p>Báo cáo doanh thu &amp; hoa hồng Sale chỉ dành cho Kế toán. Vui lòng nhập mật khẩu Kế toán.</p>
+      </div>
+      <div class="auth-modal-body">
+        <form id="accountant-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="accountant-key">Mật khẩu Kế toán <span class="required">*</span></label>
+            <div class="input-with-icon">
+              <input type="password" id="accountant-key" class="form-control" autocomplete="off" required>
+              <i class="fa-solid fa-key"></i>
+            </div>
+            <div class="form-error-text"></div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-block" id="accountant-submit">
+            <i class="fa-solid fa-unlock"></i> Mở Báo cáo doanh thu
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL ẢNH MINH CHỨNG CHỐT KHÁCH ==================== -->
+  <div class="modal-backdrop" id="proof-modal" role="dialog" aria-modal="true" aria-labelledby="proof-modal-title">
+    <div class="modal-box proof-modal-box">
+      <div class="modal-header">
+        <h3 id="proof-modal-title"><i class="fa-solid fa-image" style="color:var(--primary-600); margin-right:8px;"></i> Ảnh minh chứng chốt khách</h3>
+        <button type="button" class="modal-close-btn" id="proof-modal-close" aria-label="Đóng">&times;</button>
+      </div>
+      <div class="modal-body" id="proof-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Ô chọn ảnh dùng chung cho mọi dòng (không nằm trong bảng để không bị mất khi bảng tự làm mới) -->
+  <input type="file" id="proof-file-input" accept="image/*" hidden>
 
   <div class="toast-container" id="toast-container"></div>
 

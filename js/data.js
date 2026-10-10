@@ -296,6 +296,19 @@ const COURSES_DATA = [
   }
 ];
 
+// Đội ngũ Sale (admin.html: cột "Đã chốt được khách" + bảng hoa hồng trong Báo cáo doanh thu).
+// Mã `id` được lưu vào Lead (lead.closedBy.saleId) — đổi tên thoải mái, KHÔNG đổi mã đã dùng.
+const SALES_TEAM = [
+  { id: "sale1", name: "Nguyễn Văn A" },
+  { id: "sale2", name: "Trần Thị B" },
+  { id: "sale3", name: "Lê Văn C" },
+  { id: "sale4", name: "Phạm Thị D" },
+  { id: "sale5", name: "Hoàng Văn E" }
+];
+
+// Hoa hồng Sale: 3% trên giá trị các khóa học do Sale chốt và đã được xác nhận thanh toán.
+const SALES_COMMISSION_RATE = 0.03;
+
 // Dữ liệu Diễn đàn Thảo luận Giáo viên (Community Forum)
 const FORUM_POSTS_DATA = [
   {
