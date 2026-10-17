@@ -1,5 +1,6 @@
 /**
- * TRỢ LÝ AI SƯ PHẠM — trang assistant.html (cần đăng nhập)
+ * TRỢ LÝ AI SƯ PHẠM — nút nổi góc phải + popup chat (index.html, student.html; cần đăng nhập)
+ * Script tự chèn nút & popup vào trang. Link ngắn /tro-ly-ai → index.html?ai=1 mở sẵn popup.
  * Khung chat gọi /api/ai (Vercel Function → Google Gemini), chữ trả lời hiện dần (streaming).
  * Lịch sử hội thoại lưu trong sessionStorage (mất khi đóng tab). 5 nút gợi ý nhanh điền sẵn câu lệnh mẫu.
  */
@@ -96,37 +97,158 @@ Mỗi đoạn 2–3 câu: nêu điểm mạnh cụ thể và điều cần cố 
   };
 
   // ==========================================
-  // KHỞI ĐỘNG & ĐĂNG NHẬP
+  // NÚT NỔI GÓC PHẢI + POPUP CHAT (tự chèn vào trang)
   // ==========================================
 
+  const TEASER_KEY = 'eduai_ai_teaser_seen';
+
+  // Panel có data-gate-exempt: trang có Gated Access (index.html) không chặn thao tác bên trong popup;
+  // chưa đăng nhập thì popup tự hiện khung khóa riêng. Nút nổi KHÔNG miễn chặn → chưa đăng nhập
+  // bấm vào sẽ hỏi đăng nhập trước, xong tự mở popup.
+  const WIDGET_HTML = `
+    <div class="ai-teaser" id="ai-teaser" data-gate-exempt hidden>
+      <button type="button" class="ai-teaser-close" id="ai-teaser-close" aria-label="Ẩn lời mời" data-gate-exempt>&times;</button>
+      <strong>✨ Trợ lý AI Sư phạm</strong>
+      <span>Soạn giáo án, đề kiểm tra, nhận xét học bạ... chỉ trong vài giây!</span>
+    </div>
+    <button type="button" class="ai-fab" id="ai-fab" aria-label="Mở Trợ lý AI Sư phạm" aria-expanded="false" aria-controls="ai-widget" title="Trợ lý AI Sư phạm">
+      <span class="ai-fab-icon ai-fab-open"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+      <span class="ai-fab-icon ai-fab-close"><i class="fa-solid fa-xmark"></i></span>
+    </button>
+    <section class="ai-widget" id="ai-widget" role="dialog" aria-modal="false" aria-labelledby="ai-widget-title" data-gate-exempt hidden>
+      <header class="ai-widget-head">
+        <div class="ai-widget-avatar"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div class="ai-widget-title">
+          <strong id="ai-widget-title">Trợ lý AI Sư phạm</strong>
+          <span><i class="fa-solid fa-circle"></i> Sẵn sàng hỗ trợ Thầy/Cô</span>
+        </div>
+        <button type="button" class="ai-head-btn" id="btn-ai-new" title="Cuộc trò chuyện mới" aria-label="Cuộc trò chuyện mới"><i class="fa-solid fa-plus"></i></button>
+        <button type="button" class="ai-head-btn ai-head-expand" id="btn-ai-expand" title="Phóng to" aria-label="Phóng to"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
+        <button type="button" class="ai-head-btn" id="btn-ai-close" title="Thu nhỏ" aria-label="Đóng Trợ lý AI"><i class="fa-solid fa-minus"></i></button>
+      </header>
+
+      <div class="ai-widget-locked" id="ai-locked" hidden>
+        <div class="ai-welcome-icon"><i class="fa-solid fa-lock"></i></div>
+        <h2>Đăng nhập để dùng Trợ lý AI</h2>
+        <p>Miễn phí cho giáo viên: soạn giáo án 5512, kịch bản slide, ma trận đề, SKKN, nhận xét học bạ chỉ trong vài giây.</p>
+        <button type="button" class="btn btn-primary btn-block" id="btn-ai-login"><i class="fa-solid fa-right-to-bracket"></i> Đăng nhập / Đăng ký</button>
+      </div>
+
+      <div class="ai-chat" id="ai-app">
+        <div class="ai-messages" id="ai-messages" aria-live="polite"></div>
+        <div class="ai-composer">
+          <div class="ai-chips" id="ai-chips" aria-label="Gợi ý nhanh"></div>
+          <div class="ai-hint" id="ai-hint" hidden></div>
+          <form class="ai-input-row" id="ai-form">
+            <label for="ai-input" class="sr-only">Câu hỏi cho Trợ lý AI</label>
+            <textarea id="ai-input" rows="1" maxlength="8000" placeholder="Nhập yêu cầu hoặc câu hỏi bất kỳ..."></textarea>
+            <button type="submit" class="ai-send-btn" id="ai-send" aria-label="Gửi" title="Gửi (Enter)"><i class="fa-solid fa-paper-plane"></i></button>
+          </form>
+          <p class="ai-disclaimer">AI có thể sai sót · Không nhập thông tin thật của học sinh</p>
+        </div>
+      </div>
+    </section>`;
+
   function boot() {
+    document.body.insertAdjacentHTML('beforeend', WIDGET_HTML);
+    document.body.classList.add('has-ai-fab');
+    state.messages = loadChat();
+    renderChips();
+    bindEvents();
+
+    $('ai-fab').addEventListener('click', () => (isOpen() ? closeWidget() : openWidget()));
+    $('btn-ai-close').addEventListener('click', closeWidget);
+    $('btn-ai-expand').addEventListener('click', () => setExpanded(!$('ai-widget').classList.contains('is-expanded')));
+    $('btn-ai-login').addEventListener('click', () => EduSite.openAuth());
+    $('ai-teaser-close').addEventListener('click', hideTeaser);
+    $('ai-teaser').addEventListener('click', e => { if (!e.target.closest('#ai-teaser-close')) $('ai-fab').click(); });
+    document.addEventListener('keydown', e => {
+      // Esc đóng popup, trừ khi đang có modal khác (đăng nhập, video...) mở phía trên
+      if (e.key === 'Escape' && isOpen() && !document.querySelector('.modal-backdrop.active')) closeWidget();
+    });
     window.addEventListener('eduai:auth', e => {
       if (!e.detail) {
-        window.location.href = 'index.html';
-        return;
+        state.messages = [];
+        saveChat();
       }
-      enter();
+      if (isOpen()) renderState();
     });
-    $('btn-ai-login').addEventListener('click', () => EduSite.openAuth());
 
-    if (Store.getUser()) enter();
-    else EduSite.openAuth();
+    // Link ngắn /tro-ly-ai chuyển về index.html?ai=1 → mở sẵn popup
+    if (/[?&]ai=1\b/.test(location.search)) {
+      history.replaceState(null, '', location.pathname + location.search.replace(/[?&]ai=1\b/, '').replace(/^&/, '?') + location.hash);
+      if (Store.getUser()) openWidget();
+      else $('ai-fab').click();
+    } else {
+      maybeShowTeaser();
+    }
   }
 
-  let eventsBound = false;
-  function enter() {
-    if (!Store.getUser()) return;
-    $('ai-locked').hidden = true;
-    $('ai-app').hidden = false;
-    $('btn-ai-new').hidden = false;
-    if (!eventsBound) {
-      state.messages = loadChat();
-      renderChips();
-      bindEvents();
-      eventsBound = true;
-    }
-    renderMessages();
+  function isOpen() {
+    return !$('ai-widget').hidden;
+  }
+
+  function openWidget() {
+    hideTeaser();
+    const widget = $('ai-widget');
+    widget.hidden = false;
+    requestAnimationFrame(() => widget.classList.add('is-open'));
+    $('ai-fab').classList.add('is-active');
+    $('ai-fab').setAttribute('aria-expanded', 'true');
+    document.body.classList.add('ai-widget-open');
+    renderState();
     if (state.messages.length) scrollToBottom(true);
+    if (Store.getUser() && window.matchMedia('(hover: hover)').matches) $('ai-input').focus();
+    Store.track('ai_open');
+  }
+
+  function closeWidget() {
+    const widget = $('ai-widget');
+    widget.classList.remove('is-open');
+    $('ai-fab').classList.remove('is-active');
+    $('ai-fab').setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('ai-widget-open');
+    setTimeout(() => { if (!widget.classList.contains('is-open')) widget.hidden = true; }, 250);
+  }
+
+  function setExpanded(expanded) {
+    const btn = $('btn-ai-expand');
+    $('ai-widget').classList.toggle('is-expanded', expanded);
+    btn.title = expanded ? 'Thu về khung nhỏ' : 'Phóng to';
+    btn.setAttribute('aria-label', btn.title);
+    btn.innerHTML = expanded ? '<i class="fa-solid fa-down-left-and-up-right-to-center"></i>' : '<i class="fa-solid fa-up-right-and-down-left-from-center"></i>';
+  }
+
+  // Chưa đăng nhập: khung khóa trong popup; đã đăng nhập: khung chat
+  function renderState() {
+    const loggedIn = !!Store.getUser();
+    $('ai-locked').hidden = loggedIn;
+    $('ai-app').hidden = !loggedIn;
+    $('btn-ai-new').hidden = !loggedIn;
+    if (loggedIn) renderMessages();
+  }
+
+  // Lời mời nhỏ cạnh nút nổi, hiện 1 lần mỗi phiên
+  function maybeShowTeaser() {
+    try {
+      if (sessionStorage.getItem(TEASER_KEY)) return;
+    } catch (e) {
+      return;
+    }
+    setTimeout(() => {
+      if (isOpen()) return;
+      $('ai-teaser').hidden = false;
+      setTimeout(hideTeaser, 9000);
+    }, 3500);
+  }
+
+  function hideTeaser() {
+    $('ai-teaser').hidden = true;
+    try {
+      sessionStorage.setItem(TEASER_KEY, '1');
+    } catch (e) {
+      /* bỏ qua */
+    }
   }
 
   function bindEvents() {
@@ -147,6 +269,14 @@ Mỗi đoạn 2–3 câu: nêu điểm mạnh cụ thể và điều cần cố 
         if (!state.busy) submitInput();
       }
     });
+
+    // Lăn chuột dọc trên hàng nút gợi ý → cuộn ngang
+    $('ai-chips').addEventListener('wheel', e => {
+      const chips = e.currentTarget;
+      if (chips.scrollWidth <= chips.clientWidth || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      chips.scrollLeft += e.deltaY;
+    }, { passive: false });
 
     $('ai-chips').addEventListener('click', e => {
       const chip = e.target.closest('[data-preset]');

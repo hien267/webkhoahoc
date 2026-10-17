@@ -8,7 +8,8 @@
     { "source": "/quan-ly", "destination": "/admin.html", "permanent": false },
     { "source": "/student", "destination": "/student.html", "permanent": false },
     { "source": "/hoc-vien", "destination": "/student.html", "permanent": false },
-    { "source": "/tro-ly-ai", "destination": "/assistant.html", "permanent": false },
-    { "source": "/assistant", "destination": "/assistant.html", "permanent": false }
+    { "source": "/tro-ly-ai", "destination": "/index.html?ai=1", "permanent": false },
+    { "source": "/assistant", "destination": "/index.html?ai=1", "permanent": false },
+    { "source": "/assistant.html", "destination": "/index.html?ai=1", "permanent": false }
   ]
 }

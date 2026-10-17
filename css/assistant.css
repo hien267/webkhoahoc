@@ -1,19 +1,265 @@
 /* ==========================================================================
-   TRỢ LÝ AI SƯ PHẠM — assistant.html (dùng kèm css/style.css + css/portal.css)
+   TRỢ LÝ AI SƯ PHẠM — nút nổi góc phải + popup chat (js/assistant.js tự chèn vào trang)
+   Dùng kèm css/style.css (design tokens). Nạp ở index.html & student.html.
    ========================================================================== */
 
-.ai-page {
-  padding: 1.25rem 0 2rem;
+.ai-widget[hidden],
+.ai-widget [hidden],
+.ai-teaser[hidden] {
+  display: none !important;
+}
+
+/* Toast nhích lên để không đè nút nổi */
+body.has-ai-fab .toast-container {
+  bottom: 104px;
+}
+
+/* Popup đang mở: toast dời sang trái popup */
+@media (min-width: 601px) {
+  body.ai-widget-open .toast-container {
+    right: 464px;
+  }
+}
+
+/* ---------- Nút nổi ---------- */
+.ai-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1910;
+  width: 62px;
+  height: 62px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-600), var(--cyan-500));
+  color: var(--white);
+  font-size: 1.55rem;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.4);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+/* Vòng sáng lan tỏa thu hút sự chú ý */
+.ai-fab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--cyan-400);
+  animation: aiPulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+.ai-fab:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 14px 32px rgba(37, 99, 235, 0.5);
+}
+
+.ai-fab:focus-visible {
+  outline: 3px solid #93C5FD;
+  outline-offset: 3px;
+}
+
+.ai-fab.is-active::before {
+  animation: none;
+  opacity: 0;
+}
+
+.ai-fab-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ai-fab-close {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+}
+
+.ai-fab.is-active .ai-fab-open {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+}
+
+.ai-fab.is-active .ai-fab-close {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Lời mời cạnh nút nổi ---------- */
+.ai-teaser {
+  position: fixed;
+  right: 24px;
+  bottom: 100px;
+  z-index: 1905;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 250px;
+  padding: 12px 34px 12px 14px;
+  border: 1px solid var(--slate-200);
+  border-radius: 16px 16px 4px 16px;
+  background: var(--white);
+  box-shadow: var(--shadow-xl);
+  font-size: 0.84rem;
+  color: var(--slate-600);
+  cursor: pointer;
+  animation: aiFadeIn 0.4s ease;
+}
+
+.ai-teaser strong {
+  color: var(--primary-800);
+  font-size: 0.9rem;
+}
+
+.ai-teaser-close {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--slate-400);
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.ai-teaser-close:hover {
+  background: var(--slate-100);
+  color: var(--slate-700);
+}
+
+/* ---------- Popup chat ---------- */
+.ai-widget {
+  position: fixed;
+  right: 24px;
+  bottom: 100px;
+  z-index: 1900;
+  width: 420px;
+  height: min(660px, calc(100dvh - 124px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: 22px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
+  opacity: 0;
+  transform: translateY(16px) scale(0.94);
+  transform-origin: bottom right;
+  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), width 0.35s ease, height 0.35s ease;
+}
+
+.ai-widget.is-open {
+  opacity: 1;
+  transform: none;
+}
+
+.ai-widget.is-expanded {
+  width: min(920px, calc(100vw - 48px));
+  height: calc(100dvh - 124px);
+}
+
+.ai-widget-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 10px 12px 14px;
+  background: linear-gradient(135deg, var(--primary-800), var(--primary-600));
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.ai-widget-avatar {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 1.1rem;
+}
+
+.ai-widget-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.ai-widget-title strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ai-widget-title span {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.ai-widget-title span i {
+  font-size: 0.5rem;
+  color: var(--emerald-500);
+  vertical-align: 2px;
+  margin-right: 3px;
+}
+
+.ai-head-btn {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--white);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.ai-head-btn:hover,
+.ai-head-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.ai-widget-locked {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.75rem;
+  text-align: center;
+  background: var(--slate-50);
+}
+
+.ai-widget-locked h2 {
+  font-size: 1.15rem;
+  color: var(--primary-900);
+  margin-bottom: 0.4rem;
+}
+
+.ai-widget-locked p {
+  color: var(--slate-600);
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
 }
 
 .ai-chat {
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  max-width: 980px;
-  margin: 0 auto;
-  height: max(540px, calc(100dvh - var(--header-h) - 84px - 3.25rem));
-  padding: 0;
-  overflow: hidden;
 }
 
 /* ---------- Vùng hội thoại ---------- */
@@ -520,30 +766,85 @@
   to { opacity: 0; }
 }
 
+@keyframes aiPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.45); opacity: 0; }
+}
+
+/* Khung nhỏ: gọn lại cho vừa 420px */
+.ai-widget:not(.is-expanded) .ai-messages { padding: 1rem 14px; }
+.ai-widget:not(.is-expanded) .ai-composer { padding: 8px 12px; }
+.ai-widget:not(.is-expanded) .ai-chips {
+  flex-wrap: nowrap;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+  mask-image: linear-gradient(to right, #000 85%, transparent);
+}
+.ai-widget:not(.is-expanded) .ai-chips::-webkit-scrollbar { display: none; }
+.ai-widget:not(.is-expanded) .ai-msg-user .ai-msg-body { max-width: 86%; }
+.ai-widget:not(.is-expanded) .ai-avatar { width: 30px; height: 30px; font-size: 0.85rem; }
+.ai-widget:not(.is-expanded) .ai-msg-model .ai-msg-body { padding: 12px 14px; }
+.ai-widget:not(.is-expanded) .ai-md { font-size: 0.92rem; }
+.ai-widget:not(.is-expanded) .ai-welcome h2 { font-size: 1.1rem; }
+.ai-widget:not(.is-expanded) .ai-welcome > p { font-size: 0.88rem; margin-bottom: 1rem; }
+.ai-widget:not(.is-expanded) .ai-welcome-icon { width: 50px; height: 50px; font-size: 1.3rem; }
+.ai-widget:not(.is-expanded) .ai-preset-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+.ai-widget:not(.is-expanded) .ai-preset-card { padding: 10px; gap: 8px; align-items: flex-start; }
+.ai-widget:not(.is-expanded) .ai-preset-icon { font-size: 1.25rem; }
+.ai-widget:not(.is-expanded) .ai-preset-card strong { font-size: 0.84rem; }
+.ai-widget:not(.is-expanded) .ai-preset-card small { font-size: 0.74rem; }
+.ai-widget:not(.is-expanded) .ai-disclaimer { font-size: 0.7rem; }
+
+/* Điện thoại: popup toàn màn hình */
 @media (max-width: 600px) {
-  .ai-page { padding: 0; }
-  .ai-page > .container { padding-left: 0; padding-right: 0; }
-  .ai-chat {
-    height: calc(100dvh - var(--header-h) - 68px);
-    min-height: 460px;
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
+  .ai-fab {
+    right: 16px;
+    bottom: 16px;
+    width: 56px;
+    height: 56px;
+    font-size: 1.35rem;
   }
-  .ai-messages { padding: 1rem 12px; }
-  .ai-composer { padding: 8px 12px; }
-  .ai-chips { flex-wrap: nowrap; }
-  .ai-msg-user .ai-msg-body { max-width: 88%; }
-  .ai-avatar { width: 30px; height: 30px; font-size: 0.85rem; }
-  .ai-msg-model .ai-msg-body { padding: 12px 14px; }
-  .ai-welcome h2 { font-size: 1.12rem; }
-  .ai-disclaimer { font-size: 0.7rem; }
+
+  .ai-teaser {
+    right: 16px;
+    bottom: 84px;
+  }
+
+  body.has-ai-fab .toast-container {
+    bottom: 88px;
+  }
+
+  .ai-widget,
+  .ai-widget.is-expanded {
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    border: none;
+    border-radius: 0;
+    transform-origin: bottom center;
+  }
+
+  .ai-head-expand {
+    display: none;
+  }
+
+  body.ai-widget-open {
+    overflow: hidden;
+  }
+
+  body.ai-widget-open .ai-fab,
+  body.ai-widget-open .ai-teaser {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .ai-msg,
   .ai-welcome,
-  .ai-hint { animation: none; }
+  .ai-hint,
+  .ai-teaser { animation: none; }
+  .ai-fab::before { animation: none; }
+  .ai-widget { transition: none; }
 }
 
 .sr-only {
