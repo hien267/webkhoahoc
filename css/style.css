@@ -2751,11 +2751,27 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Mục "Trợ lý AI": không có dropdown nên chừa lề phải như các mục khác */
+.nav-link-solo {
+  padding-right: 12px;
+}
+
+.nav-new {
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+  background: var(--amber-500);
+  color: var(--white);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
 @media (min-width: 1024px) and (max-width: 1199px) {
   .brand-text span { display: none; }
   .nav-link { padding-left: 8px; font-size: 0.88rem; }
   .nav-link > i:first-child { display: none; }
   .user-chip-name { display: none; }
+  .nav-new { display: none; }
 }
 
 /* Dưới 1024px: menu thành bảng dọc mở bằng nút ☰ */
