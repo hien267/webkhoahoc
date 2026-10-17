@@ -100,6 +100,30 @@ Mỗi đoạn 2–3 câu: nêu điểm mạnh cụ thể và điều cần cố 
   // NÚT NỔI GÓC PHẢI + POPUP CHAT (tự chèn vào trang)
   // ==========================================
 
+  // Linh vật: robot chatbot (bong bóng thoại) đội mũ tốt nghiệp — SVG thuần, không id nên chèn nhiều lần được
+  const MASCOT_SVG = `<svg class="ai-mascot" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+    <g fill="#2563EB">
+      <rect x="13.5" y="44" width="5" height="20" rx="2.5"/>
+      <rect x="101.5" y="44" width="5" height="20" rx="2.5"/>
+      <rect x="10" y="60" width="11" height="27" rx="5.5"/>
+      <rect x="99" y="60" width="11" height="27" rx="5.5"/>
+      <ellipse cx="60" cy="72" rx="41" ry="33"/>
+      <path d="M31 94 L21 112 L46 101 Z"/>
+    </g>
+    <rect x="31" y="55" width="58" height="36" rx="18" fill="#fff"/>
+    <g fill="none" stroke="#2563EB" stroke-linecap="round">
+      <path d="M43 75 q7 -8 14 0" stroke-width="4.5"/>
+      <path d="M63 75 q7 -8 14 0" stroke-width="4.5"/>
+      <path d="M54 82 q6 5 12 0" stroke-width="3.5"/>
+    </g>
+    <g transform="rotate(-8 60 30)" stroke="#1E3A8A" stroke-width="2.5" stroke-linejoin="round">
+      <path d="M40 31 v10 q20 10 40 0 v-10 z" fill="#fff"/>
+      <polygon points="60,13 99,28 60,43 21,28" fill="#fff"/>
+      <path d="M60 28 L91 33 V46" fill="none" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="91" cy="49" r="4" fill="#F97316" stroke="none"/>
+    </g>
+  </svg>`;
+
   const TEASER_KEY = 'eduai_ai_teaser_seen';
 
   // Panel có data-gate-exempt: trang có Gated Access (index.html) không chặn thao tác bên trong popup;
@@ -112,12 +136,13 @@ Mỗi đoạn 2–3 câu: nêu điểm mạnh cụ thể và điều cần cố 
       <span>Soạn giáo án, đề kiểm tra, nhận xét học bạ... chỉ trong vài giây!</span>
     </div>
     <button type="button" class="ai-fab" id="ai-fab" aria-label="Mở Trợ lý AI Sư phạm" aria-expanded="false" aria-controls="ai-widget" title="Trợ lý AI Sư phạm">
-      <span class="ai-fab-icon ai-fab-open"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+      <span class="ai-fab-glow" aria-hidden="true"></span>
+      <span class="ai-fab-icon ai-fab-open">${MASCOT_SVG}</span>
       <span class="ai-fab-icon ai-fab-close"><i class="fa-solid fa-xmark"></i></span>
     </button>
     <section class="ai-widget" id="ai-widget" role="dialog" aria-modal="false" aria-labelledby="ai-widget-title" data-gate-exempt hidden>
       <header class="ai-widget-head">
-        <div class="ai-widget-avatar"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div class="ai-widget-avatar">${MASCOT_SVG}</div>
         <div class="ai-widget-title">
           <strong id="ai-widget-title">Trợ lý AI Sư phạm</strong>
           <span><i class="fa-solid fa-circle"></i> Sẵn sàng hỗ trợ Thầy/Cô</span>
@@ -503,7 +528,7 @@ Mỗi đoạn 2–3 câu: nêu điểm mạnh cụ thể và điều cần cố 
     const name = user ? user.fullName.trim().split(/\s+/).pop() : '';
     return `
       <div class="ai-welcome">
-        <div class="ai-welcome-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div class="ai-welcome-icon is-mascot">${MASCOT_SVG}</div>
         <h2>Chào Thầy/Cô ${esc(name)}! Hôm nay em giúp gì được ạ?</h2>
         <p>Chọn một nghiệp vụ bên dưới để có ngay câu lệnh mẫu, hoặc gõ bất kỳ câu hỏi nào vào ô chat.</p>
         <div class="ai-preset-grid">
@@ -545,7 +570,7 @@ Mỗi đoạn 2–3 câu: nêu điểm mạnh cụ thể và điều cần cố 
       </div>`;
     return `
       <div class="ai-msg ai-msg-model${streaming ? ' is-streaming' : ''}" data-index="${i}">
-        <div class="ai-avatar"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div class="ai-avatar is-mascot">${MASCOT_SVG}</div>
         <div class="ai-msg-main">
           <div class="ai-msg-body ai-md${m.text ? '' : ' is-waiting'}">${body}</div>
           ${actions}

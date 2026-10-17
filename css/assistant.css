@@ -11,7 +11,7 @@
 
 /* Toast nhích lên để không đè nút nổi */
 body.has-ai-fab .toast-container {
-  bottom: 104px;
+  bottom: 118px;
 }
 
 /* Popup đang mở: toast dời sang trái popup */
@@ -21,52 +21,54 @@ body.has-ai-fab .toast-container {
   }
 }
 
-/* ---------- Nút nổi ---------- */
+/* ---------- Nút nổi: linh vật robot đội mũ, quầng sáng vàng cam ---------- */
 .ai-fab {
   position: fixed;
-  right: 24px;
-  bottom: 24px;
+  right: 22px;
+  bottom: 22px;
   z-index: 1910;
-  width: 62px;
-  height: 62px;
+  width: 76px;
+  height: 76px;
+  padding: 0;
   border: none;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-600), var(--cyan-500));
-  color: var(--white);
-  font-size: 1.55rem;
+  background: transparent;
   cursor: pointer;
-  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.4);
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Vòng sáng lan tỏa thu hút sự chú ý */
-.ai-fab::before {
+/* 2 vòng sáng cam lan tỏa so le */
+.ai-fab::before,
+.ai-fab::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 2px;
+  z-index: 0;
   border-radius: 50%;
-  border: 2px solid var(--cyan-400);
-  animation: aiPulse 2.4s ease-out infinite;
+  border: 3px solid #F97316;
+  animation: aiPulse 2.2s ease-out infinite;
   pointer-events: none;
 }
 
-.ai-fab:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 14px 32px rgba(37, 99, 235, 0.5);
+.ai-fab::after {
+  border-color: #FBBF24;
+  animation-delay: 1.1s;
 }
 
-.ai-fab:focus-visible {
-  outline: 3px solid #93C5FD;
-  outline-offset: 3px;
-}
-
-.ai-fab.is-active::before {
-  animation: none;
-  opacity: 0;
+/* Quầng sáng vàng cam phía sau linh vật */
+.ai-fab-glow {
+  position: absolute;
+  inset: -14px;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 159, 67, 0.9) 0%, rgba(249, 115, 22, 0.5) 38%, rgba(249, 115, 22, 0) 70%);
+  animation: aiGlow 2.2s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .ai-fab-icon {
   position: absolute;
+  z-index: 1;
   inset: 0;
   display: flex;
   align-items: center;
@@ -74,9 +76,41 @@ body.has-ai-fab .toast-container {
   transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.ai-fab .ai-mascot {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 4px #FFB347) drop-shadow(0 0 10px rgba(249, 115, 22, 0.75)) drop-shadow(0 6px 10px rgba(30, 58, 138, 0.3));
+  transform-origin: 50% 60%;
+  animation: aiBeat 2.8s ease-in-out infinite;
+}
+
+.ai-fab:hover .ai-mascot {
+  animation-play-state: paused;
+  transform: translateY(-3px) scale(1.06);
+}
+
+.ai-fab:focus-visible {
+  outline: 3px solid #93C5FD;
+  outline-offset: 4px;
+}
+
 .ai-fab-close {
+  inset: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-600), var(--cyan-500));
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.4);
+  color: var(--white);
+  font-size: 1.5rem;
   opacity: 0;
   transform: rotate(-90deg) scale(0.6);
+}
+
+.ai-fab.is-active::before,
+.ai-fab.is-active::after,
+.ai-fab.is-active .ai-fab-glow {
+  animation: none;
+  opacity: 0;
 }
 
 .ai-fab.is-active .ai-fab-open {
@@ -89,11 +123,40 @@ body.has-ai-fab .toast-container {
   transform: none;
 }
 
+/* Linh vật ở đầu popup, màn chào và cạnh câu trả lời */
+.ai-widget-avatar .ai-mascot,
+.ai-avatar.is-mascot .ai-mascot,
+.ai-welcome-icon.is-mascot .ai-mascot {
+  width: 100%;
+  height: 100%;
+}
+
+.ai-welcome-icon.is-mascot {
+  width: 84px;
+  height: 84px;
+  padding: 0;
+  background: radial-gradient(circle, rgba(255, 179, 71, 0.45) 0%, rgba(249, 115, 22, 0) 70%);
+  box-shadow: none;
+  border-radius: 50%;
+}
+
+.ai-widget:not(.is-expanded) .ai-welcome-icon.is-mascot {
+  width: 72px;
+  height: 72px;
+}
+
+.ai-avatar.is-mascot {
+  padding: 2px;
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-sm);
+}
+
 /* ---------- Lời mời cạnh nút nổi ---------- */
 .ai-teaser {
   position: fixed;
   right: 24px;
-  bottom: 100px;
+  bottom: 114px;
   z-index: 1905;
   display: flex;
   flex-direction: column;
@@ -138,10 +201,10 @@ body.has-ai-fab .toast-container {
 .ai-widget {
   position: fixed;
   right: 24px;
-  bottom: 100px;
+  bottom: 114px;
   z-index: 1900;
   width: 420px;
-  height: min(660px, calc(100dvh - 124px));
+  height: min(660px, calc(100dvh - 138px));
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -162,7 +225,7 @@ body.has-ai-fab .toast-container {
 
 .ai-widget.is-expanded {
   width: min(920px, calc(100vw - 48px));
-  height: calc(100dvh - 124px);
+  height: calc(100dvh - 138px);
 }
 
 .ai-widget-head {
@@ -176,16 +239,17 @@ body.has-ai-fab .toast-container {
 }
 
 .ai-widget-avatar {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   flex-shrink: 0;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  font-size: 1.1rem;
+  padding: 3px;
+  background: var(--white);
+  border: 2px solid #FDBA74;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.55);
 }
 
 .ai-widget-title {
@@ -767,8 +831,20 @@ body.has-ai-fab .toast-container {
 }
 
 @keyframes aiPulse {
-  0% { transform: scale(1); opacity: 0.8; }
-  100% { transform: scale(1.45); opacity: 0; }
+  0% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(1.75); opacity: 0; }
+}
+
+@keyframes aiBeat {
+  0%, 62%, 100% { transform: scale(1) rotate(0); }
+  70% { transform: scale(1.16) rotate(-6deg); }
+  78% { transform: scale(0.96) rotate(4deg); }
+  86% { transform: scale(1.08) rotate(-2deg); }
+}
+
+@keyframes aiGlow {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.12); }
 }
 
 /* Khung nhỏ: gọn lại cho vừa 420px */
@@ -798,20 +874,19 @@ body.has-ai-fab .toast-container {
 /* Điện thoại: popup toàn màn hình */
 @media (max-width: 600px) {
   .ai-fab {
-    right: 16px;
-    bottom: 16px;
-    width: 56px;
-    height: 56px;
-    font-size: 1.35rem;
+    right: 14px;
+    bottom: 14px;
+    width: 68px;
+    height: 68px;
   }
 
   .ai-teaser {
     right: 16px;
-    bottom: 84px;
+    bottom: 96px;
   }
 
   body.has-ai-fab .toast-container {
-    bottom: 88px;
+    bottom: 100px;
   }
 
   .ai-widget,
@@ -843,7 +918,10 @@ body.has-ai-fab .toast-container {
   .ai-welcome,
   .ai-hint,
   .ai-teaser { animation: none; }
-  .ai-fab::before { animation: none; }
+  .ai-fab::before,
+  .ai-fab::after,
+  .ai-fab-glow,
+  .ai-fab .ai-mascot { animation: none; }
   .ai-widget { transition: none; }
 }
 
