@@ -2758,6 +2758,12 @@ h1, h2, h3, h4, h5, h6 {
   .user-chip-name { display: none; }
 }
 
+/* 1200–1299px: menu 5 mục + tên người dùng dễ chật → thu gọn tên và khoảng đệm */
+@media (min-width: 1200px) and (max-width: 1299px) {
+  .nav-link { padding-left: 9px; font-size: 0.9rem; }
+  .user-chip-name { max-width: 84px; }
+}
+
 /* Dưới 1024px: menu thành bảng dọc mở bằng nút ☰ */
 @media (max-width: 1023px) {
   :root {
