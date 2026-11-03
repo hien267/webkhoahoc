@@ -9,6 +9,9 @@
  */
 const GEMINI_KEY = process.env.GEMINI_API_KEY || '';
 const MODEL = process.env.GEMINI_MODEL || 'gemini-flash-latest';
+// Mô hình dự phòng khi mô hình chính quá tải (503/429) hoặc treo quá lâu
+const FALLBACK_MODEL = process.env.GEMINI_QUIZ_FALLBACK_MODEL || 'gemini-flash-lite-latest';
+const ATTEMPT_TIMEOUT_MS = 50000;
 const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 
@@ -84,7 +87,7 @@ function readBody(req) {
   }
 }
 
-function callGemini(userText, withThinkingLevel) {
+function callGemini(model, userText, withThinkingLevel) {
   const generationConfig = {
     temperature: 0.6,
     maxOutputTokens: 8192,
@@ -92,8 +95,9 @@ function callGemini(userText, withThinkingLevel) {
     responseSchema: RESPONSE_SCHEMA
   };
   if (withThinkingLevel) generationConfig.thinkingConfig = { thinkingLevel: 'low' };
-  return fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(MODEL)}:generateContent`, {
+  return fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
     method: 'POST',
+    signal: AbortSignal.timeout(ATTEMPT_TIMEOUT_MS),
     headers: { 'Content-Type': 'application/json', 'x-goog-api-key': GEMINI_KEY },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
@@ -150,18 +154,25 @@ module.exports = async function handler(req, res) {
 
   const userText = `${topic ? `Chủ đề/môn học: ${topic}\n\n` : ''}TÀI LIỆU CỦA GIÁO VIÊN:\n"""\n${text.slice(0, MAX_TEXT_CHARS)}\n"""\n\nHãy soạn đúng ${QUESTION_COUNT} câu hỏi trắc nghiệm theo đúng định dạng JSON đã quy định.`;
 
-  let upstream;
-  try {
-    upstream = await callGemini(userText, true);
-    // Mô hình không nhận thinkingLevel → gọi lại không kèm cấu hình này
-    if (upstream.status === 400) upstream = await callGemini(userText, false);
-  } catch (e) {
-    return res.status(502).json({ error: friendlyError(502) });
-  }
-  if (!upstream.ok) {
+  let upstream = null;
+  for (const model of [...new Set([MODEL, FALLBACK_MODEL])]) {
+    try {
+      upstream = await callGemini(model, userText, true);
+      // Mô hình không nhận thinkingLevel → gọi lại không kèm cấu hình này
+      if (upstream.status === 400) upstream = await callGemini(model, userText, false);
+    } catch (e) {
+      console.error('Gemini timeout/network', model, e.name);
+      upstream = null;
+      continue;
+    }
+    if (upstream.ok) break;
     const detail = await upstream.text().catch(() => '');
-    console.error('Gemini error', upstream.status, detail.slice(0, 500));
-    return res.status(upstream.status === 429 ? 429 : 502).json({ error: friendlyError(upstream.status) });
+    console.error('Gemini error', model, upstream.status, detail.slice(0, 300));
+    if (upstream.status !== 503 && upstream.status !== 429 && upstream.status !== 500) break;
+  }
+  if (!upstream || !upstream.ok) {
+    const status = upstream ? upstream.status : 502;
+    return res.status(status === 429 ? 429 : 502).json({ error: friendlyError(status) });
   }
 
   const data = await upstream.json().catch(() => null);
