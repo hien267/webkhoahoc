@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Kéo Co Từ Tài Liệu — EduAI Teacher Hub</title>
+  <meta name="description" content="Tải giáo án hoặc tài liệu bất kỳ môn học, AI tự soạn câu hỏi trắc nghiệm và mở ngay trò chơi kéo co 2 đội cho lớp học.">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+
+  <!-- Google Analytics 4 (GA4) — điền Measurement ID trong js/config.js -->
+  <script src="js/config.js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    (function () {
+      var id = (window.EDUAI_CONFIG || {}).GA4_MEASUREMENT_ID;
+      if (!id || /X{4,}/.test(id)) return;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(id);
+      document.head.appendChild(s);
+      gtag('js', new Date());
+      gtag('config', id);
+    })();
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Be Vietnam Pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 CDN Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/keo-co.css">
+  <link rel="stylesheet" href="css/assistant.css">
+</head>
+<body data-page="game">
+
+  <!-- ==================== HEADER NAVBAR NGANG (dùng chung index.html / student.html / admin.html / blog.html / post.html) ==================== -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="EduAI Teacher Hub — Trang chủ">
+        <span class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+        <span class="brand-text">
+          <strong>EduAI Teacher Hub</strong>
+          <span>Đào tạo AI dành cho Giáo viên</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" id="main-nav" aria-label="Điều hướng chính">
+        <ul class="nav-menu">
+          <li class="nav-item" data-nav="home">
+            <div class="nav-row">
+              <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Trang chủ</a>
+              <button type="button" class="nav-caret" data-dd-toggle data-gate-exempt aria-expanded="false" aria-label="Mục con của Trang chủ"><i class="fa-solid fa-chevron-down"></i></button>
+            </div>
+            <ul class="nav-dropdown">
+              <li><a href="index.html#about"><span class="dd-icon"><i class="fa-solid fa-award"></i></span><span class="dd-text"><strong>Giới thiệu</strong><small>Vì sao chọn EduAI Teacher Hub</small></span></a></li>
+              <li><a href="index.html#survey-section"><span class="dd-icon"><i class="fa-solid fa-route"></i></span><span class="dd-text"><strong>Khảo sát &amp; Lộ trình</strong><small>Đánh giá năng lực AI, nhận lộ trình riêng</small></span></a></li>
+              <li><a href="index.html#forum"><span class="dd-icon"><i class="fa-solid fa-comments"></i></span><span class="dd-text"><strong>Diễn đàn</strong><small>Chia sẻ prompt &amp; kinh nghiệm dạy học</small></span></a></li>
+              <li><a href="keo-co.html"><span class="dd-icon"><i class="fa-solid fa-gamepad"></i></span><span class="dd-text"><strong>Game Kéo Co AI</strong><small>Tải giáo án, AI tạo câu hỏi thi đấu 2 đội</small></span></a></li>
+              <li><a href="index.html#contact"><span class="dd-icon"><i class="fa-solid fa-headset"></i></span><span class="dd-text"><strong>Liên hệ</strong><small>Zalo, Hotline, Email hỗ trợ</small></span></a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item" data-nav="courses">
+            <div class="nav-row">
+              <a href="index.html#courses" class="nav-link"><i class="fa-solid fa-layer-group"></i> Khóa học</a>
+              <button type="button" class="nav-caret" data-dd-toggle data-gate-exempt aria-expanded="false" aria-label="Mục con của Khóa học"><i class="fa-solid fa-chevron-down"></i></button>
+            </div>
+            <ul class="nav-dropdown dd-wide">
+              <li class="dd-full"><a href="index.html#courses"><span class="dd-icon"><i class="fa-solid fa-grip"></i></span><span class="dd-text"><strong>Tất cả các khóa học</strong><small>Học phí ưu đãi 299.000đ – 599.000đ, học Online qua Zoom</small></span></a></li>
+              <li><a href="index.html?loc=giao_an#courses"><span class="dd-icon"><i class="fa-solid fa-book-bookmark"></i></span><span class="dd-text"><strong>Soạn Giáo án 5512</strong><small>499.000đ</small></span></a></li>
+              <li><a href="index.html?loc=slide_hoclieu#courses"><span class="dd-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span><span class="dd-text"><strong>Slide &amp; Học liệu</strong><small>399.000đ</small></span></a></li>
+              <li><a href="index.html?loc=khao_thi#courses"><span class="dd-icon"><i class="fa-solid fa-list-check"></i></span><span class="dd-text"><strong>Ma trận Đề thi</strong><small>449.000đ</small></span></a></li>
+              <li><a href="index.html?loc=video_ai#courses"><span class="dd-icon"><i class="fa-solid fa-video"></i></span><span class="dd-text"><strong>Video Bài giảng AI</strong><small>549.000đ</small></span></a></li>
+              <li><a href="index.html?loc=chu_nhiem#courses"><span class="dd-icon"><i class="fa-solid fa-user-pen"></i></span><span class="dd-text"><strong>Chủ nhiệm &amp; Nhận xét</strong><small>349.000đ</small></span></a></li>
+              <li><a href="index.html?loc=skkn#courses"><span class="dd-icon"><i class="fa-solid fa-lightbulb"></i></span><span class="dd-text"><strong>Sáng kiến kinh nghiệm</strong><small>599.000đ</small></span></a></li>
+              <li><a href="index.html?loc=game_app#courses"><span class="dd-icon"><i class="fa-solid fa-gamepad"></i></span><span class="dd-text"><strong>Trò chơi học tập</strong><small>499.000đ</small></span></a></li>
+              <li><a href="index.html?loc=hanh_chinh#courses"><span class="dd-icon"><i class="fa-solid fa-folder-open"></i></span><span class="dd-text"><strong>Hành chính &amp; Tài liệu</strong><small>299.000đ</small></span></a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item" data-nav="blog">
+            <div class="nav-row">
+              <a href="blog.html" class="nav-link"><i class="fa-solid fa-newspaper"></i> Bài viết</a>
+              <button type="button" class="nav-caret" data-dd-toggle data-gate-exempt aria-expanded="false" aria-label="Mục con của Bài viết"><i class="fa-solid fa-chevron-down"></i></button>
+            </div>
+            <ul class="nav-dropdown">
+              <li><a href="blog.html"><span class="dd-icon"><i class="fa-solid fa-newspaper"></i></span><span class="dd-text"><strong>Tất cả bài viết</strong><small>Kiến thức AI thực chiến cho giáo viên</small></span></a></li>
+              <li><a href="blog.html?cm=lo_trinh"><span class="dd-icon"><i class="fa-solid fa-route"></i></span><span class="dd-text"><strong>Lộ trình</strong><small>Bắt đầu với AI từ con số 0</small></span></a></li>
+              <li><a href="blog.html?cm=huong_dan"><span class="dd-icon"><i class="fa-solid fa-screwdriver-wrench"></i></span><span class="dd-text"><strong>Hướng dẫn</strong><small>Thao tác từng bước, xử lý lỗi</small></span></a></li>
+              <li><a href="blog.html?cm=prompt"><span class="dd-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span><span class="dd-text"><strong>Kỹ năng Prompt</strong><small>Công thức viết câu lệnh hiệu quả</small></span></a></li>
+              <li><a href="blog.html?cm=thuc_chien"><span class="dd-icon"><i class="fa-solid fa-bolt"></i></span><span class="dd-text"><strong>Thực chiến</strong><small>Bộ mẫu câu lệnh dùng ngay</small></span></a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item" data-nav="student">
+            <div class="nav-row">
+              <a href="student.html" class="nav-link"><i class="fa-solid fa-user-graduate"></i> Cổng học viên</a>
+              <button type="button" class="nav-caret" data-dd-toggle data-gate-exempt aria-expanded="false" aria-label="Mục con của Cổng học viên"><i class="fa-solid fa-chevron-down"></i></button>
+            </div>
+            <ul class="nav-dropdown">
+              <li><a href="student.html#schedule-panel"><span class="dd-icon"><i class="fa-solid fa-calendar-days"></i></span><span class="dd-text"><strong>Lịch học Zoom</strong><small>Buổi học sắp tới &amp; link vào lớp</small></span></a></li>
+              <li><a href="student.html#progress-panel"><span class="dd-icon"><i class="fa-solid fa-chart-simple"></i></span><span class="dd-text"><strong>Tiến trình học tập</strong><small>Theo dõi từng khóa đã đăng ký</small></span></a></li>
+              <li><a href="student.html#video-panel"><span class="dd-icon"><i class="fa-solid fa-circle-play"></i></span><span class="dd-text"><strong>Kho video xem lại</strong><small>Bản ghi Zoom, xem lại trọn đời</small></span></a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item" data-nav="admin">
+            <div class="nav-row">
+              <a href="admin.html" class="nav-link" data-gate-exempt><i class="fa-solid fa-chart-line"></i> Quản lý <i class="fa-solid fa-lock nav-lock" title="Dành cho quản trị viên"></i></a>
+              <button type="button" class="nav-caret" data-dd-toggle data-gate-exempt aria-expanded="false" aria-label="Mục con của Quản lý"><i class="fa-solid fa-chevron-down"></i></button>
+            </div>
+            <ul class="nav-dropdown">
+              <li><a href="admin.html#hoc-vien" data-gate-exempt><span class="dd-icon"><i class="fa-solid fa-address-book"></i></span><span class="dd-text"><strong>Quản lý học viên</strong><small>Dashboard Lead, xác nhận thanh toán</small></span></a></li>
+              <li><a href="admin.html#doanh-thu" data-gate-exempt><span class="dd-icon"><i class="fa-solid fa-sack-dollar"></i></span><span class="dd-text"><strong>Báo cáo doanh thu</strong><small>Doanh thu theo tháng &amp; theo khóa</small></span></a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <div id="header-user"></div>
+        <button type="button" class="nav-toggle-btn" id="nav-toggle" aria-label="Mở menu" aria-controls="main-nav" aria-expanded="false" data-gate-exempt>
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-main" id="main-content">
+    <!-- ==================== BƯỚC 1: TẢI TÀI LIỆU ==================== -->
+    <section class="kc-setup" id="kc-setup">
+      <div class="kc-hero">
+        <div class="container">
+          <nav class="kc-crumbs" aria-label="Đường dẫn"><a href="index.html">Trang chủ</a><i class="fa-solid fa-chevron-right"></i><span>Game Kéo Co</span></nav>
+          <h1><span class="kc-hero-icon" aria-hidden="true"><i class="fa-solid fa-gamepad"></i></span> Tạo Game Kéo Co Từ Tài Liệu</h1>
+          <p>Thầy/Cô tải giáo án hoặc dán nội dung bài học (môn nào cũng được) — AI tự soạn 10 câu trắc nghiệm và mở ngay một ván kéo co 2 đội trên máy chiếu.</p>
+        </div>
+      </div>
+
+      <div class="container kc-setup-grid">
+        <div class="kc-card kc-upload-card">
+          <div class="kc-step-head"><span class="kc-step-num">1</span><h2>Tài liệu bài học</h2></div>
+
+          <label class="kc-label" for="kc-topic">Chủ đề / Môn học <small>(không bắt buộc)</small></label>
+          <input type="text" id="kc-topic" class="kc-input" maxlength="80" placeholder="VD: Lịch sử 8 — Cách mạng tháng Tám năm 1945" autocomplete="off">
+
+          <label class="kc-dropzone" id="kc-dropzone" for="kc-file">
+            <input type="file" id="kc-file" accept=".txt,.md,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+            <span class="kc-drop-icon"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+            <strong>Kéo thả file vào đây hoặc <u>bấm để chọn file</u></strong>
+            <small>Hỗ trợ file Word (.docx) và văn bản (.txt) — tối đa 10MB</small>
+          </label>
+
+          <div class="kc-file-chip" id="kc-file-chip" hidden>
+            <i class="fa-solid fa-file-lines"></i>
+            <span class="kc-file-info"><strong id="kc-file-name"></strong><small id="kc-file-meta"></small></span>
+            <button type="button" class="kc-icon-btn" id="kc-file-remove" aria-label="Bỏ file đã chọn"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <div class="kc-divider"><span>hoặc dán trực tiếp nội dung giáo án</span></div>
+
+          <textarea id="kc-text" class="kc-textarea" rows="8" placeholder="Dán nội dung bài học, đề cương ôn tập, giáo án... vào đây."></textarea>
+          <div class="kc-text-foot"><span id="kc-text-count">0 ký tự</span><span>Nên có ít nhất 3–4 đoạn văn để AI ra câu hỏi hay</span></div>
+
+          <div class="kc-actions">
+            <button type="button" class="btn btn-primary kc-btn-generate" id="kc-generate">🤖 Phân tích tài liệu và Tạo Game</button>
+            <button type="button" class="btn btn-secondary" id="kc-demo"><i class="fa-solid fa-play"></i> Chơi thử câu hỏi mẫu</button>
+          </div>
+          <button type="button" class="kc-link-btn" id="kc-last" hidden><i class="fa-solid fa-clock-rotate-left"></i> <span></span></button>
+
+          <div class="kc-status" id="kc-status" role="status" aria-live="polite" hidden></div>
+        </div>
+
+        <aside class="kc-card kc-guide-card">
+          <div class="kc-step-head"><span class="kc-step-num">2</span><h2>Cách chơi</h2></div>
+          <img src="images/keo-co-chibi.webp" alt="Hai bạn nhỏ đội xanh và đội đỏ đang kéo co" class="kc-guide-img" width="1024" height="682" loading="lazy">
+          <ol class="kc-guide-steps">
+            <li>Chia lớp thành <strong class="t-blue">Đội Xanh</strong> (bên trái) và <strong class="t-red">Đội Đỏ</strong> (bên phải). Mỗi đội có bộ câu hỏi riêng.</li>
+            <li>Trả lời <strong>đúng</strong> → dây kéo về phía đội mình. Trả lời <strong>sai</strong> → đội bị đóng băng 3 giây.</li>
+            <li>Đội nào <strong>dẫn trước 3 điểm</strong> thắng ngay. Hết 60 giây hoặc hết câu hỏi thì đội nhiều điểm hơn thắng.</li>
+          </ol>
+          <div class="kc-keys">
+            <i class="fa-solid fa-keyboard"></i>
+            <span>Chơi bằng bàn phím: <strong class="t-blue">Đội Xanh</strong> phím <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> · <strong class="t-red">Đội Đỏ</strong> phím <kbd>7</kbd><kbd>8</kbd><kbd>9</kbd><kbd>0</kbd></span>
+          </div>
+          <p class="kc-note"><i class="fa-solid fa-shield-halved"></i> Tài liệu được gửi tới Google Gemini để soạn câu hỏi — Thầy/Cô không đưa thông tin cá nhân của học sinh vào nhé.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================== BƯỚC 2: SÂN ĐẤU KÉO CO ==================== -->
+    <section class="kc-arena" id="kc-arena" hidden aria-label="Sân đấu kéo co">
+      <header class="kc-bar">
+        <div class="kc-bar-topic" id="kc-topic-label" title="">Ôn tập kiến thức</div>
+        <div class="kc-scoreboard">
+          <div class="kc-score kc-score-blue"><span>Đội Xanh</span><strong id="kc-score-blue">0</strong></div>
+          <div class="kc-timer" id="kc-timer" aria-label="Thời gian còn lại"><i class="fa-regular fa-clock"></i> <span id="kc-time">60</span></div>
+          <div class="kc-score kc-score-red"><strong id="kc-score-red">0</strong><span>Đội Đỏ</span></div>
+        </div>
+        <div class="kc-bar-tools">
+          <button type="button" class="kc-tool" id="kc-sound" aria-label="Tắt âm thanh" title="Tắt/Bật âm"><i class="fa-solid fa-volume-high"></i></button>
+          <button type="button" class="kc-tool" id="kc-fullscreen" aria-label="Toàn màn hình" title="Toàn màn hình"><i class="fa-solid fa-expand"></i></button>
+          <button type="button" class="kc-tool kc-tool-exit" id="kc-exit" aria-label="Thoát" title="Thoát"><i class="fa-solid fa-right-from-bracket"></i> <span>Thoát</span></button>
+        </div>
+      </header>
+
+      <div class="kc-grid">
+        <section class="kc-team" data-team="blue" id="kc-team-blue" aria-label="Đội Xanh"></section>
+
+        <div class="kc-field" id="kc-field">
+          <div class="kc-field-zone kc-zone-blue">Vùng Đội Xanh</div>
+          <div class="kc-field-zone kc-zone-red">Vùng Đội Đỏ</div>
+          <div class="kc-center-line" aria-hidden="true"></div>
+          <div class="kc-rope" id="kc-rope">
+            <img src="images/keo-co-chibi.webp" alt="Hai đội chibi đang kéo co" width="1024" height="682">
+          </div>
+          <p class="kc-field-hint" id="kc-field-hint">Dẫn trước 3 điểm để kéo đối thủ qua vạch!</p>
+          <div class="kc-countdown" id="kc-countdown" hidden></div>
+        </div>
+
+        <section class="kc-team" data-team="red" id="kc-team-red" aria-label="Đội Đỏ"></section>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal tổng kết ván đấu -->
+  <div class="kc-modal" id="kc-result" hidden role="dialog" aria-modal="true" aria-labelledby="kc-result-title">
+    <div class="kc-modal-card">
+      <div class="kc-trophy" id="kc-result-icon">🏆</div>
+      <h2 id="kc-result-title">Đội Xanh chiến thắng!</h2>
+      <p class="kc-result-reason" id="kc-result-reason"></p>
+      <div class="kc-result-scores">
+        <div class="kc-result-team blue"><span>Đội Xanh</span><strong id="kc-result-blue">0</strong><small id="kc-result-blue-sub"></small></div>
+        <div class="kc-result-vs">VS</div>
+        <div class="kc-result-team red"><span>Đội Đỏ</span><strong id="kc-result-red">0</strong><small id="kc-result-red-sub"></small></div>
+      </div>
+      <div class="kc-modal-actions">
+        <button type="button" class="btn btn-primary" id="kc-replay"><i class="fa-solid fa-rotate-right"></i> Chơi lại</button>
+        <button type="button" class="btn btn-secondary" id="kc-new"><i class="fa-solid fa-file-circle-plus"></i> Tạo game mới</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas class="kc-confetti" id="kc-confetti" aria-hidden="true"></canvas>
+
+  <footer class="mini-footer">
+    <div class="container mini-footer-inner">
+      <span>&copy; 2026 EduAI Teacher Hub &middot; Trung tâm Đào tạo AI dành cho Giáo viên</span>
+      <nav class="mini-footer-links" aria-label="Liên kết chân trang">
+        <a href="index.html">Trang chủ</a>
+        <a href="index.html?loc=game_app#courses">Khóa học Trò chơi học tập</a>
+        <a href="#" data-policy="privacy">Chính sách bảo mật</a>
+        <a href="#" data-policy="terms">Điều khoản sử dụng</a>
+        <a href="tel:0988123456">Hotline 0988.123.456</a>
+      </nav>
+    </div>
+  </footer>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/lead-model.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/telegram.js"></script>
+  <script src="js/site.js"></script>
+  <script src="js/keo-co.js"></script>
+  <script src="js/assistant.js"></script>
+</body>
+</html>
